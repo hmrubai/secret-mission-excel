@@ -1,0 +1,43 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use App\Http\Traits\HelperTrait;
+use Illuminate\Validation\ValidationException;
+use App\Services\SettingsService;
+
+class SettingsController extends Controller
+{
+    protected $service;
+    use HelperTrait;
+
+    public function __construct(SettingsService $service)
+    {
+        $this->service = $service;
+    }
+
+    public function getDepartmentList(Request $request)
+    {
+        try {
+            $data = $this->settingsService->getDepartmentList($request);
+
+            return $this->successResponse($data, 'Department List successful', Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function getDesignationList(Request $request)
+    {
+        try {
+            $data = $this->settingsService->getDesignationList($request);
+
+            return $this->successResponse($data, 'Designation List successful', Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+}
