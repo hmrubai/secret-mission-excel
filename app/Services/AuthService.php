@@ -72,6 +72,13 @@ class AuthService
 
     public function register(Request $request)
     {
+        // Check if user already exists
+        $existingUser = User::where('email', $request->email)->first();
+
+        if ($existingUser) {
+            throw new \Exception('This email is already registered');
+        }
+
         $data = $this->prepareAuthData($request);
         $user = User::create($data);
         return $user;

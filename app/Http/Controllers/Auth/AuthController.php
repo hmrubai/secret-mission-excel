@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
 use App\Http\Traits\HelperTrait;
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\StoreUserRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
@@ -31,6 +32,26 @@ class AuthController extends Controller
             return  $this->errorResponse($e->errors(), $e->getMessage(), Response::HTTP_UNPROCESSABLE_ENTITY);
         } catch (\Throwable $th) {
             return  $this->errorResponse($th->getMessage(), 'Login failed', Response::HTTP_UNAUTHORIZED);
+        }
+    }
+
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+
+        return $this->successResponse(null, 'Logout successful', Response::HTTP_OK);
+    }
+
+    public function addNewUser(Request $request)
+    {
+        try {
+            $data = $this->service->register($request);
+
+            return  $this->successResponse($data, 'User added successfully', Response::HTTP_CREATED);
+        } catch (ValidationException $e) {
+            return  $this->errorResponse($e->errors(), $e->getMessage(), Response::HTTP_UNPROCESSABLE_ENTITY);
+        } catch (\Throwable $th) {
+            return  $this->errorResponse($th->getMessage(), 'Something went wrong!', Response::HTTP_UNAUTHORIZED);
         }
     }
 

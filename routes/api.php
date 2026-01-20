@@ -11,9 +11,11 @@ Route::get('/get-department-list', [SettingsController::class, 'getDepartmentLis
 Route::get('/get-designation-list', [SettingsController::class, 'getDesignationList']);
 
 // Protected
-Route::middleware('auth:sanctum')->group(function () {
-    Route::post('logout', [AuthController::class, 'logout']);
-    Route::get('me', fn ($request) => $request->user());
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('/add-new-user', [AuthController::class, 'addNewUser']);
+    // Route::get('me', fn ($request) => $request->user());
+
+    Route::post('/logout', [AuthController::class, 'logout']);
 });
 
 Route::group(['prefix' => 'open'], function () {
