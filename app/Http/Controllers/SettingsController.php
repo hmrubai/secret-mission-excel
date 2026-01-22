@@ -12,7 +12,6 @@ class SettingsController extends Controller
 {
     protected $service;
     use HelperTrait;
-
     public function __construct(SettingsService $service)
     {
         $this->service = $service;
@@ -21,7 +20,7 @@ class SettingsController extends Controller
     public function getDepartmentList(Request $request)
     {
         try {
-            $data = $this->settingsService->getDepartmentList($request);
+            $data = $this->service->getDepartmentList($request);
 
             return $this->successResponse($data, 'Department List successful', Response::HTTP_OK);
         } catch (\Throwable $th) {
@@ -32,9 +31,20 @@ class SettingsController extends Controller
     public function getDesignationList(Request $request)
     {
         try {
-            $data = $this->settingsService->getDesignationList($request);
+            $data = $this->service->getDesignationList($request);
 
             return $this->successResponse($data, 'Designation List successful', Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function getProjectTypeList(Request $request)
+    {
+        try {
+            $data = $this->service->getProjectTypeList($request);
+
+            return $this->successResponse($data, 'Project Type List successful', Response::HTTP_OK);
         } catch (\Throwable $th) {
             return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
         }
