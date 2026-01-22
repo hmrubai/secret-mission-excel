@@ -311,17 +311,6 @@ trait HelperTrait
         return true;
     }
 
-    public function sendSms($phone, $message)
-    {
-        try {
-            $url = "https://api.sms.net.bd/sendsms?api_key=9NuhTjtgko80Pc8JcnTUzWnKJ3ATR8QauHtfsU1S&msg=". $message ."&to=".$phone;
-            //$url = "https://api.mobireach.com.bd/SendTextMessage?Username=bacbon1&Password=BBSft@2024&From=8801877715110&To=" . $phone . "&Message=" . $message;
-            return $response = Http::get($url);
-        } catch (\Throwable $th) {
-            throw $th;
-        }
-    }
-
     private function generateTransactionId(): string
     {
         $prefix = "TRX-SC";
@@ -329,5 +318,10 @@ trait HelperTrait
         $random = str_pad(rand(0, 9999), 4, '0', STR_PAD_LEFT); // 4-digit padded number
 
         return "{$prefix}{$date}{$random}";
+    }
+    
+    public static function generateSlug(string $name): string
+    {
+        return $slug = Str::slug($name);
     }
 }

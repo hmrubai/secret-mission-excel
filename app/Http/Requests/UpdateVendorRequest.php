@@ -21,12 +21,10 @@ class UpdateVendorRequest extends FormRequest
      */
     public function rules(): array
     {
-        $vendorId = $this->route('vendor')->id;
+        $vendorId = $this->route('vendors')->id;
 
         return [
             'name' => 'required|string|max:255',
-            'slug' => "required|string|max:255|unique:vendors,slug,{$vendorId}",
-
             'email' => 'nullable|email',
             'phone' => 'nullable|string|max:50',
             'website' => 'nullable|url',

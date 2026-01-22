@@ -2,20 +2,21 @@
 
 namespace App\Services;
 
-use App\Models\Vendor;
+use App\Models\Project;
 use App\Http\Traits\HelperTrait;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
-class VendorService
+class ProjectService
 {
     use HelperTrait;
 
     public function index(Request $request): Collection|LengthAwarePaginator|array
     {
-        $query = Vendor::query();
+        $query = Project::query();
 
         //condition data 
         $this->applyActive($query, $request);
@@ -36,55 +37,53 @@ class VendorService
 
     public function store(Request $request)
     {
-        $data = $this->prepareVendorData($request);
+        $data = $this->prepareProjectData($request);
 
-        return Vendor::create($data);
+        return Project::create($data);
     }
 
-    private function prepareVendorData(Request $request, bool $isNew = true): array
+    private function prepareProjectData(Request $request, bool $isNew = true): array
     {
         // Get the fillable fields from the model
-        $fillable = (new Vendor())->getFillable();
+        $fillable = (new Project())->getFillable();
 
         // Extract relevant fields from the request dynamically
         $data = $request->only($fillable);
 
-        $data['slug'] = $request->slug ?? $this->generateSlug($request->name);
-
         // Handle file uploads
-        //$data['thumbnail'] = $this->ftpFileUpload($request, 'thumbnail', 'vendor');
-        //$data['cover_picture'] = $this->ftpFileUpload($request, 'cover_picture', 'vendor');
+        //$data['thumbnail'] = $this->ftpFileUpload($request, 'thumbnail', 'project');
+        //$data['cover_picture'] = $this->ftpFileUpload($request, 'cover_picture', 'project');
 
         // Add created_by and created_at fields for new records
         if ($isNew) {
-            // $data['created_by'] = auth()->user()->id;
+            $data['created_by'] = Auth::id();
             $data['created_at'] = now();
         }
 
         return $data;
     }
 
-    public function show(int $id): Vendor
+    public function show(int $id): Project
     {
-        return Vendor::findOrFail($id);
+        return Project::findOrFail($id);
     }
 
     public function update(Request $request, int $id)
     {
-        $vendor = Vendor::findOrFail($id);
-        $updateData = $this->prepareVendorData($request, false);
+        $project = Project::findOrFail($id);
+        $updateData = $this->prepareProjectData($request, false);
         
          $updateData = array_filter($updateData, function ($value) {
             return !is_null($value);
         });
-        $vendor->update($updateData);
+        $project->update($updateData);
 
-        return $vendor;
+        return $project;
     }
 
     public function destroy(int $id): bool
     {
-        $vendor = Vendor::findOrFail($id);
-        return $vendor->delete();
+        $project = Project::findOrFail($id);
+        return $project->delete();
     }
 }

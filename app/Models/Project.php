@@ -19,6 +19,7 @@ class Project extends Model
         'status',
         'progress',
         'is_archived',
+        'created_by'
     ];
 
     protected $casts = [
@@ -38,5 +39,10 @@ class Project extends Model
     public function vendor()
     {
         return $this->belongsTo(Vendor::class);
+    }
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 }

@@ -22,8 +22,8 @@ class StoreVendorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:vendors,slug',
+            'name' => 'required|string|max:255|unique:vendors,name',
+            // 'slug' => 'required|string|max:255|unique:vendors,slug',
             'email' => 'nullable|email',
             'phone' => 'nullable|string|max:50',
             'website' => 'nullable|url',
