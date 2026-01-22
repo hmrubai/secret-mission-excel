@@ -34,7 +34,7 @@ class UpdateProjectRequest extends FormRequest
             'status' => 'sometimes|string',
             'progress' => 'sometimes|nullable|integer|min:0|max:100',
             'is_archived' => 'sometimes|boolean',
-            'created_by' => 'sometimes|nullable|exists:users,id',
+            // 'created_by' => 'sometimes|nullable|exists:users,id',
         ];
     }
 }
