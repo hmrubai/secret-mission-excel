@@ -30,10 +30,9 @@ class StoreProjectRequest extends FormRequest
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
             'onhold_postponed_date' => 'nullable|date',
-            'deadline' => 'required|date|after_or_equal:start_date',
             'status' => 'nullable|string',
             'progress' => 'nullable|integer|min:0|max:100',
-            'is_archived' => 'boolean',
+            'is_archived' => 'nullable|boolean',
             // 'created_by' => 'nullable|exists:users,id',
         ];
     }

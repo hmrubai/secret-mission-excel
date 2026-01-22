@@ -23,6 +23,8 @@ class VendorService
         // Select specific columns
         $query->select(['*']);
 
+        $query->with(['projects']);
+
         // Sorting
         $this->applySorting($query, $request);
 

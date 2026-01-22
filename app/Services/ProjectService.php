@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Project;
+use App\Models\ProjectHistory;
 use App\Http\Traits\HelperTrait;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
@@ -27,6 +28,8 @@ class ProjectService
         // Sorting
         $this->applySorting($query, $request);
 
+        $query->with(['vendor', 'projectType', 'createdBy']);
+
         // Searching
         $searchKeys = ['name']; // Define the fields you want to search by
         $this->applySearch($query, $request->input('search'), $searchKeys);
@@ -48,7 +51,7 @@ class ProjectService
         $fillable = (new Project())->getFillable();
 
         // Extract relevant fields from the request dynamically
-        $data = $request->only($fillable);
+        $data = $request->only($fillable);              
 
         // Handle file uploads
         //$data['thumbnail'] = $this->ftpFileUpload($request, 'thumbnail', 'project');
@@ -72,8 +75,8 @@ class ProjectService
     {
         $project = Project::findOrFail($id);
         $updateData = $this->prepareProjectData($request, false);
-        
-         $updateData = array_filter($updateData, function ($value) {
+
+        $updateData = array_filter($updateData, function ($value) {
             return !is_null($value);
         });
         $project->update($updateData);
@@ -82,8 +85,17 @@ class ProjectService
     }
 
     public function destroy(int $id): bool
+/**
+ * Delete the specified project from storage.
+ *
+ * @param int $id Project ID
+ * @return bool True if the project was deleted successfully, false otherwise
+ */
+/*************  ✨ Windsurf Command ⭐  *************/
+/*******  69162f52-d138-4f41-85d7-73ad715ecb36  *******/
     {
         $project = Project::findOrFail($id);
         return $project->delete();
     }
+
 }
