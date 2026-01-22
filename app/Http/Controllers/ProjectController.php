@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Traits\HelperTrait;
-use App\Http\Requests\StoreProjectRequest
+use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use Illuminate\Validation\ValidationException;
 use App\Services\ProjectService;
