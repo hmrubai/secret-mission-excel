@@ -85,14 +85,6 @@ class ProjectService
     }
 
     public function destroy(int $id): bool
-/**
- * Delete the specified project from storage.
- *
- * @param int $id Project ID
- * @return bool True if the project was deleted successfully, false otherwise
- */
-/*************  ✨ Windsurf Command ⭐  *************/
-/*******  69162f52-d138-4f41-85d7-73ad715ecb36  *******/
     {
         $project = Project::findOrFail($id);
         return $project->delete();
