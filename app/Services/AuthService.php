@@ -115,6 +115,11 @@ class AuthService
         return User::where('id', $id)->with('department', 'designation')->first();
     }
 
+    public function myProfile(int $id): User
+    {
+        return User::where('id', $id)->with('department', 'designation')->first();
+    }
+
     public function update(Request $request, int $id)
     {
         $auth = User::findOrFail($id);
@@ -135,5 +140,10 @@ class AuthService
         $auth->deleted_at = now();
 
         return $auth->save();
+    }
+
+    public function logout($request): void
+    {
+        $request->user()->currentAccessToken()->delete();
     }
 }

@@ -38,8 +38,7 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
-
+        $data = $this->service->logout($request);
         return $this->successResponse(null, 'Logout successful', Response::HTTP_OK);
     }
 
@@ -66,6 +65,29 @@ class AuthController extends Controller
             return  $this->errorResponse($e->errors(), $e->getMessage(), Response::HTTP_UNPROCESSABLE_ENTITY);
         } catch (\Throwable $th) {
             return  $this->errorResponse($th->getMessage(), 'Something went wrong!', Response::HTTP_UNAUTHORIZED);
+        }
+    }
+
+    public function getProfile($request, $id)
+    {
+        try {
+            $data = $this->service->show($id);
+
+            return $this->successResponse($data, 'User profile successful', Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function myProfile(Request $request)
+    {
+        try {
+            $id = Auth::id();
+            $data = $this->service->myProfile($id);
+
+            return $this->successResponse($data, 'My profile successful', Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
