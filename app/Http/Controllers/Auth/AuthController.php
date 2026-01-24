@@ -42,7 +42,7 @@ class AuthController extends Controller
         return $this->successResponse(null, 'Logout successful', Response::HTTP_OK);
     }
 
-    public function addNewUser(Request $request)
+    public function addNewUser(StoreUserRequest $request)
     {
         try {
             $data = $this->service->register($request);
