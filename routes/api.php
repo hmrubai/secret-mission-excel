@@ -13,7 +13,7 @@ Route::post('login', [AuthController::class, 'login']);
 // Protected
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/add-new-user', [AuthController::class, 'addNewUser']);
-    Route::put('/update-user/{id}', [AuthController::class, 'updateUser']);
+    Route::post('/update-user/{id}', [AuthController::class, 'updateUser']);
     Route::get('/admin/get-user-list', [AuthController::class, 'getUserlist']);
     Route::get('/admin/get-profile/{id}', [AuthController::class, 'getProfile']);
     Route::get('/my-profile', [AuthController::class, 'myProfile']);

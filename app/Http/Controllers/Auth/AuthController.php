@@ -58,7 +58,7 @@ class AuthController extends Controller
     public function updateUser(UpdateUserRequest $request, $id)
     {
         try {
-            $data = $this->service->update($request, $id);
+            $data = $this->service->updateUser($request, $id);
 
             return  $this->successResponse($data, 'User updated successfully', Response::HTTP_OK);
         } catch (ValidationException $e) {

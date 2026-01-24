@@ -110,6 +110,35 @@ class AuthService
         return $data;
     }
 
+    private function prepareAuthUpdateData(Request $request, bool $isNew = true): array
+    {
+        $fillable = (new User())->getFillable();
+
+        // Extract relevant fields dynamically
+        $data = $request->only($fillable);
+
+        // Handle profile picture upload
+        if ($request->hasFile('profile_picture')) {
+            $data['profile_picture'] = $this->ftpFileUpload($request, 'profile_picture', 'profile');
+        }
+
+        // Hash password if present
+        if (!empty($data['password'])) {
+            $data['password'] = bcrypt($data['password']);
+        } else {
+            // Remove password if empty so it doesn't overwrite
+            unset($data['password']);
+        }
+
+        // Add created_by / created_at only for new records
+        if ($isNew) {
+            $data['created_by'] = Auth::id();
+            $data['created_at'] = now();
+        }
+
+        return $data;
+    }
+
     public function show(int $id): User
     {
         return User::where('id', $id)->with('department', 'designation')->first();
@@ -120,17 +149,16 @@ class AuthService
         return User::where('id', $id)->with('department', 'designation')->first();
     }
 
-    public function update(Request $request, int $id)
+    public function updateUser(Request $request, int $id)
     {
-        $auth = User::findOrFail($id);
-        $updateData = $this->prepareAuthData($request, false);
-        
-         $updateData = array_filter($updateData, function ($value) {
-            return !is_null($value);
-        });
-        $auth->update($updateData);
+        $user = User::findOrFail($id);
+        $updateData = $this->prepareAuthUpdateData($request, false);
 
-        return $auth;
+        $updateData = array_filter($updateData, fn($v) => $v !== null);
+
+        $user->update($updateData);
+
+        return $user;
     }
 
     public function destroy(int $id): bool
