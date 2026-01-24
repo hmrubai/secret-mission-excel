@@ -179,24 +179,45 @@ trait HelperTrait
         return null;
     }
 
+    // protected function ftpFileUpload($fullRequest, $fileName, $destination)
+    // {
+    //     if ($fullRequest->hasFile($fileName)) {
+    //         $file_temp = $fullRequest->file($fileName);
+    //         $destinations = 'uploads/' . $destination;
+
+    //         // Create directory if it doesn't exist and set permissions
+    //         if (!Storage::exists($destinations)) {
+    //             Storage::makeDirectory($destinations);
+    //         }
+
+    //         $file_url = Storage::put($destinations, $file_temp);
+
+    //         return "ftp/{$file_url}";
+    //     }
+    //     return null;
+    // }
+
     protected function ftpFileUpload($fullRequest, $fileName, $destination)
     {
         if ($fullRequest->hasFile($fileName)) {
-            $file_temp = $fullRequest->file($fileName);
-            $destinations = 'uploads/' . $destination;
 
-            // Create directory if it doesn't exist and set permissions
-            if (!Storage::exists($destinations)) {
-                Storage::makeDirectory($destinations);
+            $file = $fullRequest->file($fileName);
+            $path = 'uploads/' . $destination;
+
+            // Create directory if not exists (public disk)
+            if (!Storage::disk('public')->exists($path)) {
+                Storage::disk('public')->makeDirectory($path);
             }
 
-            $file_url = Storage::put($destinations, $file_temp);
+            // Store file in public disk
+            $filePath = Storage::disk('public')->put($path, $file);
 
-            return "ftp/{$file_url}";
+            // Return public URL path
+            return 'storage/' . $filePath;
         }
+
         return null;
     }
-
 
     // Upload and Replace file
     protected function fileUploadAndUpdate($request, $fileName, $destination, $oldFile = null)
