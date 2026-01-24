@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use App\Http\Traits\HelperTrait;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
@@ -55,7 +56,7 @@ class AuthController extends Controller
         }
     }
 
-    public function updateUser(Request $request, $id)
+    public function updateUser(UpdateUserRequest $request, $id)
     {
         try {
             $data = $this->service->update($request, $id);
