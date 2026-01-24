@@ -55,5 +55,16 @@ class AuthController extends Controller
         }
     }
 
+    public function getUserlist(Request $request)
+    {
+        try {
+            $data = $this->service->index($request);
+
+            return $this->successResponse($data, 'User List successful', Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
 }

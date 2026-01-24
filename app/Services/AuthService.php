@@ -28,6 +28,8 @@ class AuthService
         // Select specific columns
         $query->select(['*']);
 
+        $query->with(['department', 'designation']);
+
         // Sorting
         $this->applySorting($query, $request);
 

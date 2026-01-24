@@ -12,6 +12,7 @@ Route::post('login', [AuthController::class, 'login']);
 // Protected
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/add-new-user', [AuthController::class, 'addNewUser']);
+    Route::get('admin/get-user-list', [AuthController::class, 'getUserlist']);
     // Route::get('me', fn ($request) => $request->user());
 
     Route::apiResource('vendors', VendorController::class);
