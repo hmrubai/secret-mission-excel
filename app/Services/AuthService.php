@@ -96,7 +96,10 @@ class AuthService
 
         // Handle file uploads
         //$data['thumbnail'] = $this->ftpFileUpload($request, 'thumbnail', 'auth');
-        $data['profile_picture'] = $this->ftpFileUpload($request, 'profile_picture', 'profile');
+        if ($request->hasFile('profile_picture')) {
+            $data['profile_picture'] = $this->ftpFileUpload($request, 'profile_picture', 'profile');
+        }
+        //$data['profile_picture'] = $this->ftpFileUpload($request, 'profile_picture', 'profile');
 
         // Add created_by and created_at fields for new records
         if ($isNew) {

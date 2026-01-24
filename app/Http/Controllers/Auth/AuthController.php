@@ -55,6 +55,19 @@ class AuthController extends Controller
         }
     }
 
+    public function updateUser(Request $request, $id)
+    {
+        try {
+            $data = $this->service->update($request, $id);
+
+            return  $this->successResponse($data, 'User updated successfully', Response::HTTP_OK);
+        } catch (ValidationException $e) {
+            return  $this->errorResponse($e->errors(), $e->getMessage(), Response::HTTP_UNPROCESSABLE_ENTITY);
+        } catch (\Throwable $th) {
+            return  $this->errorResponse($th->getMessage(), 'Something went wrong!', Response::HTTP_UNAUTHORIZED);
+        }
+    }
+
     public function getUserlist(Request $request)
     {
         try {
