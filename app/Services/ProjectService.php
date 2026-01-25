@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Project;
 use App\Models\ProjectHistory;
 use App\Http\Traits\HelperTrait;
+use App\Models\PlanningType;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -66,6 +67,27 @@ class ProjectService
         return $data;
     }
 
+    private function preparePlanningTypeData(Request $request, bool $isNew = true): array
+    {
+        // Get the fillable fields from the model
+        $fillable = (new PlanningType())->getFillable();
+
+        // Extract relevant fields from the request dynamically
+        $data = $request->only($fillable);              
+
+        // Handle file uploads
+        //$data['thumbnail'] = $this->ftpFileUpload($request, 'thumbnail', 'project');
+        //$data['cover_picture'] = $this->ftpFileUpload($request, 'cover_picture', 'project');
+
+        // Add created_by and created_at fields for new records
+        if ($isNew) {
+            // $data['created_by'] = Auth::id();
+            $data['created_at'] = now();
+        }
+
+        return $data;
+    }
+
     public function show(int $id): Project
     {
         return Project::findOrFail($id);
@@ -88,6 +110,37 @@ class ProjectService
     {
         $project = Project::findOrFail($id);
         return $project->delete();
+    }
+
+    public function planningTypes(Request $request)
+    {
+        return PlanningType::where('is_active', true)->orderBy('name', 'asc')->get();
+    }
+
+    public function storePlanningTypes(Request $request)
+    {
+        $data = $this->preparePlanningTypeData($request, true);
+
+        return PlanningType::create($data);
+    }
+
+    public function updatePlanningTypes(Request $request, int $id)
+    {
+        $planningType = PlanningType::findOrFail($id);
+        $updateData = $this->preparePlanningTypeData($request, false);
+
+        $updateData = array_filter($updateData, function ($value) {
+            return !is_null($value);
+        });
+        $planningType->update($updateData);
+
+        return $planningType;
+    }
+
+    public function destroyPlanningType(int $id): bool
+    {
+        $planningType = PlanningType::findOrFail($id);
+        return $planningType->delete();
     }
 
 }
