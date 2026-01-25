@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ProjectPlanningController;
 use Symfony\Component\HttpKernel\Profiler\Profile;
 
 // Public
@@ -26,10 +27,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('/projects', ProjectController::class);
 
     // Planning Types Routes
-    Route::get('/planning-type-list', [ProjectController::class, 'planningTypes']);
-    Route::post('/add-planning-types', [ProjectController::class, 'storePlanningTypes']);
-    Route::post('/update-planning-types/{id}', [ProjectController::class, 'updatePlanningTypes']);
-    Route::delete('/delete-planning-types/{id}', [ProjectController::class, 'deletePlanningTypes']);
+    Route::get('/planning-type-list', [ProjectPlanningController::class, 'planningTypes']);
+    Route::post('/add-planning-types', [ProjectPlanningController::class, 'storePlanningTypes']);
+    Route::post('/update-planning-types/{id}', [ProjectPlanningController::class, 'updatePlanningTypes']);
+    Route::delete('/delete-planning-types/{id}', [ProjectPlanningController::class, 'deletePlanningTypes']);
 
     Route::post('/logout', [AuthController::class, 'logout']);
 });

@@ -76,49 +76,4 @@ class ProjectController extends Controller
             return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
-
-    public function planningTypes(Request $request)
-    {
-        try {
-            $data = $this->service->planningTypes($request);
-
-            return $this->successResponse($data, 'Planning Type List successful', Response::HTTP_OK);
-        } catch (\Throwable $th) {
-            return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    public function storePlanningTypes(StorePlanningTypeRequest $request)
-    {
-        try {
-            $data = $this->service->storePlanningTypes($request);
-
-            return $this->successResponse($data, 'Planning Type created successfully', Response::HTTP_OK);
-        } catch (\Throwable $th) {
-            return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    public function updatePlanningTypes(UpdatePlanningTypeRequest $request, $id)
-    {
-        try {
-            $data = $this->service->updatePlanningTypes($request, $id);
-
-            return $this->successResponse($data, 'Planning Type updated successfully', Response::HTTP_OK);
-        } catch (\Throwable $th) {
-            return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    public function deletePlanningTypes($id)
-    {
-        try {
-            $this->service->destroyPlanningType($id);
-
-            return $this->successResponse(null, 'Planning Type deleted successfully', Response::HTTP_OK);
-        } catch (\Throwable $th) {
-            return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-    }
-
 }

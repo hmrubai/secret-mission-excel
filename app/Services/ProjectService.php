@@ -111,36 +111,4 @@ class ProjectService
         $project = Project::findOrFail($id);
         return $project->delete();
     }
-
-    public function planningTypes(Request $request)
-    {
-        return PlanningType::where('is_active', true)->orderBy('name', 'asc')->get();
-    }
-
-    public function storePlanningTypes(Request $request)
-    {
-        $data = $this->preparePlanningTypeData($request, true);
-
-        return PlanningType::create($data);
-    }
-
-    public function updatePlanningTypes(Request $request, int $id)
-    {
-        $planningType = PlanningType::findOrFail($id);
-        $updateData = $this->preparePlanningTypeData($request, false);
-
-        $updateData = array_filter($updateData, function ($value) {
-            return !is_null($value);
-        });
-        $planningType->update($updateData);
-
-        return $planningType;
-    }
-
-    public function destroyPlanningType(int $id): bool
-    {
-        $planningType = PlanningType::findOrFail($id);
-        return $planningType->delete();
-    }
-
 }
