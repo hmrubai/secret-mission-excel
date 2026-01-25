@@ -32,6 +32,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/update-planning-types/{id}', [ProjectPlanningController::class, 'updatePlanningTypes']);
     Route::delete('/delete-planning-types/{id}', [ProjectPlanningController::class, 'deletePlanningTypes']);
 
+    // Organization Settings for Weekend and Holiday Routes
+    Route::post('/add-weekend', [SettingsController::class, 'addWeekend']);
+    Route::post('/add-holiday', [SettingsController::class, 'addHoliday']);
+
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 

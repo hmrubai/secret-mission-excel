@@ -59,9 +59,32 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Holiday newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Holiday newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Holiday query()
+ */
+	class Holiday extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $slug
+ * @property string|null $description
+ * @property int $is_active
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanningType newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanningType newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanningType query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanningType whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanningType whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanningType whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanningType whereIsActive($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanningType whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanningType whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanningType whereUpdatedAt($value)
  */
 	class PlanningType extends \Eloquent {}
 }
@@ -137,6 +160,17 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectHistory whereUpdatedBy($value)
  */
 	class ProjectHistory extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * @property-read \App\Models\PlanningType|null $planningType
+ * @property-read \App\Models\Project|null $project
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectPlanning newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectPlanning newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectPlanning query()
+ */
+	class ProjectPlanning extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -257,5 +291,14 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Vendor whereWebsite($value)
  */
 	class Vendor extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkCalendar newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkCalendar newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkCalendar query()
+ */
+	class WorkCalendar extends \Eloquent {}
 }
 

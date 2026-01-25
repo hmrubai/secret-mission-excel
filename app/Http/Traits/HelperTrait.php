@@ -12,6 +12,11 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\ValidationException;
 
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
+use App\Models\Holiday;
+use App\Models\WorkCalendar;
+
 trait HelperTrait
 {
     protected function successResponse($data, $message, $statusCode = 200, $status = true): JsonResponse
@@ -344,5 +349,38 @@ trait HelperTrait
     public static function generateSlug(string $name): string
     {
         return $slug = Str::slug($name);
+    }
+
+    protected function getCalendar(): WorkCalendar
+    {
+        return WorkCalendar::where('is_active', 1)->firstOrFail();
+    }
+
+    protected function isWeekend(Carbon $date): bool
+    {
+        $weekends = json_decode($this->getCalendar()->weekends, true);
+        return in_array($date->dayOfWeek, $weekends);
+    }
+
+    protected function isHoliday(Carbon $date): bool
+    {
+        return Holiday::where('date', $date->toDateString())
+            ->where('is_active', 1)
+            ->exists();
+    }
+
+    protected function workingDays(string $startDate, string $endDate): int
+    {
+        $period = CarbonPeriod::create($startDate, $endDate);
+        $days = 0;
+
+        foreach ($period as $date) {
+            if ($this->isWeekend($date)) continue;
+            if ($this->isHoliday($date)) continue;
+
+            $days++;
+        }
+
+        return $days;
     }
 }

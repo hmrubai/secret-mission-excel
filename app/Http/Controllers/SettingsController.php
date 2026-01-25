@@ -50,4 +50,27 @@ class SettingsController extends Controller
         }
     }
 
+    //addWeekend and Holiday methods can be added here similarly
+    public function addWeekend(Request $request)
+    {
+        try {
+            $data = $this->service->addWeekend($request);
+
+            return $this->successResponse($data, 'Weekend added successfully', Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function addHoliday(Request $request)
+    {
+        try {
+            $data = $this->service->addHoliday($request);
+
+            return $this->successResponse($data, 'Holiday added successfully', Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

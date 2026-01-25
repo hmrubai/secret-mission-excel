@@ -13,6 +13,16 @@ return new class extends Migration
     {
         Schema::create('project_plannings', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('project_id')->constrained('projects')->cascadeOnDelete();
+            $table->foreignId('planning_type_id')->constrained('planning_types')->cascadeOnDelete();
+            $table->text('description')->nullable();
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
+            $table->integer('duration_days')->nullable(); // calculated (excluding weekends/holidays)
+            $table->boolean('exclude_weekends')->default(true);
+            $table->boolean('exclude_holidays')->default(true);
+            $table->integer('progress')->default(0); // 0–100
+            $table->enum('status', ['pending', 'running', 'completed', 'on_hold'])->default('pending');
             $table->timestamps();
         });
     }
