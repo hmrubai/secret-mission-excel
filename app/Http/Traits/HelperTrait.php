@@ -358,7 +358,7 @@ trait HelperTrait
 
     protected function isWeekend(Carbon $date): bool
     {
-        $weekends = json_decode($this->getCalendar()->weekends, true);
+        $weekends = $this->getCalendar()->weekends; // already an array
         return in_array($date->dayOfWeek, $weekends);
     }
 
@@ -369,14 +369,17 @@ trait HelperTrait
             ->exists();
     }
 
-    protected function workingDays(string $startDate, string $endDate): int
+    protected function workingDays(string $startDate, string $endDate, bool $excludeWeekends = true, bool $excludeHolidays = true): int
     {
-        $period = CarbonPeriod::create($startDate, $endDate);
+        $start = Carbon::parse($startDate);
+        $end   = Carbon::parse($endDate);
+
+        $period = CarbonPeriod::create($start, $end);
         $days = 0;
 
         foreach ($period as $date) {
-            if ($this->isWeekend($date)) continue;
-            if ($this->isHoliday($date)) continue;
+            if ($excludeWeekends && $this->isWeekend($date)) continue;
+            if ($excludeHolidays && $this->isHoliday($date)) continue;
 
             $days++;
         }

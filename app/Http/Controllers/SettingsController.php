@@ -73,4 +73,36 @@ class SettingsController extends Controller
         }
     }
 
+    public function getHolidayList(Request $request)
+    {
+        try {
+            $data = $this->service->getHolidayList($request);
+
+            return $this->successResponse($data, 'Holiday List successful', Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function getWeekendList(Request $request)
+    {
+        try {
+            $data = $this->service->getWeekendList($request);
+
+            return $this->successResponse($data, 'Weekend List successful', Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function getWeekendDatesForYear(int $year)
+    {
+        try {
+            $data = $this->service->getWeekendDatesForYear($year);
+
+            return $this->successResponse($data, 'Weekend Dates for Year successful', Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

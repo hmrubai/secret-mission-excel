@@ -32,9 +32,18 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/update-planning-types/{id}', [ProjectPlanningController::class, 'updatePlanningTypes']);
     Route::delete('/delete-planning-types/{id}', [ProjectPlanningController::class, 'deletePlanningTypes']);
 
+    // Project Planning Routes
+    Route::post('/add-project-planning', [ProjectPlanningController::class, 'storeProjectPlanning']);
+    Route::post('/update-project-planning/{id}', [ProjectPlanningController::class, 'updateProjectPlanning']);
+    Route::get('/project-planning-list/{project_id}', [ProjectPlanningController::class, 'projectPlanningList']);
+    Route::delete('/delete-project-planning/{id}', [ProjectPlanningController::class, 'destroyProjectPlanning']);
+
     // Organization Settings for Weekend and Holiday Routes
     Route::post('/add-weekend', [SettingsController::class, 'addWeekend']);
     Route::post('/add-holiday', [SettingsController::class, 'addHoliday']);
+    Route::get('/holiday-list', [SettingsController::class, 'getHolidayList']);
+    Route::get('/weekend-list', [SettingsController::class, 'getWeekendList']);
+    Route::get('/get-weekend-dates/{year}', [SettingsController::class, 'getWeekendDatesForYear']);
 
     Route::post('/logout', [AuthController::class, 'logout']);
 });

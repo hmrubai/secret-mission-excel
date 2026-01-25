@@ -11,6 +11,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
+use App\Models\Holiday;
+use App\Models\WorkCalendar;
+
 class ProjectPlanningService
 {
     use HelperTrait;
@@ -67,79 +72,62 @@ class ProjectPlanningService
         return $planningType->delete();
     }
 
-    // public function index(Request $request): Collection|LengthAwarePaginator|array
-    // {
-    //     $query = ProjectPlanning::query();
+    public function storeProjectPlanning(Request $request)
+    {
+        $data = $this->prepareProjectPlanningData($request);
+        return ProjectPlanning::create($data);
+    }
 
-    //     //condition data 
-    //     $this->applyActive($query, $request);
+    private function prepareProjectPlanningData(Request $request, bool $isNew = true): array
+    {
+        // Get the fillable fields from the model
+        $fillable = (new ProjectPlanning())->getFillable();
 
-    //     // Select specific columns
-    //     $query->select(['*']);
+        // Extract relevant fields from the request dynamically
+        $data = $request->only($fillable);
 
-    //     // Sorting
-    //     $this->applySorting($query, $request);
+        $data['duration_days'] = $this->workingDays($request->start_date, $request->end_date);
 
-    //     // Searching
-    //     $searchKeys = ['name']; // Define the fields you want to search by
-    //     $this->applySearch($query, $request->input('search'), $searchKeys);
+        // Add created_by and created_at fields for new records
+        if ($isNew) {
+            // $data['created_by'] = auth()->user()->id;
+            $data['created_at'] = now();
+        }
 
-    //     // Pagination
-    //     return $this->paginateOrGet($query, $request);
-    // }
+        return $data;
+    }
 
-    // public function store(Request $request)
-    // {
-    //     $data = $this->prepareProjectPlanningData($request);
-
-    //     return ProjectPlanning::create($data);
-    // }
-
-    // private function prepareProjectPlanningData(Request $request, bool $isNew = true): array
-    // {
-    //     // Get the fillable fields from the model
-    //     $fillable = (new ProjectPlanning())->getFillable();
-
-    //     // Extract relevant fields from the request dynamically
-    //     $data = $request->only($fillable);
-
-    //     // Handle file uploads
-    //     //$data['thumbnail'] = $this->ftpFileUpload($request, 'thumbnail', 'projectPlanning');
-    //     //$data['cover_picture'] = $this->ftpFileUpload($request, 'cover_picture', 'projectPlanning');
-
-    //     // Add created_by and created_at fields for new records
-    //     if ($isNew) {
-    //         $data['created_by'] = auth()->user()->id;
-    //         $data['created_at'] = now();
-    //     }
-
-    //     return $data;
-    // }
-
-    // public function show(int $id): ProjectPlanning
-    // {
-    //     return ProjectPlanning::findOrFail($id);
-    // }
-
-    // public function update(Request $request, int $id)
-    // {
-    //     $projectPlanning = ProjectPlanning::findOrFail($id);
-    //     $updateData = $this->prepareProjectPlanningData($request, false);
+    public function updateProjectPlanning(Request $request, int $id)
+    {
+        $projectPlanning = ProjectPlanning::findOrFail($id);
+        $updateData = $this->prepareProjectPlanningData($request, false);
         
-    //      $updateData = array_filter($updateData, function ($value) {
-    //         return !is_null($value);
-    //     });
-    //     $projectPlanning->update($updateData);
+         $updateData = array_filter($updateData, function ($value) {
+            return !is_null($value);
+        });
+        $projectPlanning->update($updateData);
 
-    //     return $projectPlanning;
-    // }
+        return $projectPlanning;
+    }
 
-    // public function destroy(int $id): bool
-    // {
-    //     $projectPlanning = ProjectPlanning::findOrFail($id);
-    //     $projectPlanning->name .= '_' . Str::random(8);
-    //     $projectPlanning->deleted_at = now();
+    public function projectPlanningList($request, $project_id)
+    {
+        $query = ProjectPlanning::where('project_id', $project_id)
+            ->with(['planningType', 'project'])
+            ->orderBy('start_date', 'asc'); // order by start date
 
-    //     return $projectPlanning->save();
-    // }
+        // Optional: filter by a specific date range
+        if ($request->has('from_date') && $request->has('to_date')) {
+            $query->whereBetween('start_date', [$request->from_date, $request->to_date]);
+        }
+
+        return $query->get();
+    }
+
+    public function destroy(int $id): bool
+    {
+        $projectPlanning = ProjectPlanning::findOrFail($id);
+        return $projectPlanning->delete();
+    }
+
 }

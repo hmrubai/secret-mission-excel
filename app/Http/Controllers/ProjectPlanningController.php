@@ -7,6 +7,8 @@ use Illuminate\Http\Response;
 use App\Http\Traits\HelperTrait;
 use App\Http\Requests\StorePlanningTypeRequest;
 use App\Http\Requests\UpdatePlanningTypeRequest;
+use App\Http\Requests\StoreProjectPlanningRequest;
+use App\Http\Requests\UpdateProjectPlanningRequest;
 use Illuminate\Validation\ValidationException;
 use App\Services\ProjectPlanningService;
 
@@ -59,6 +61,50 @@ class ProjectPlanningController extends Controller
             $this->service->destroyPlanningType($id);
 
             return $this->successResponse(null, 'Planning Type deleted successfully', Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function projectPlanningList(Request $request, $project_id)
+    {
+        try {
+            $data = $this->service->projectPlanningList($request, $project_id);
+
+            return $this->successResponse($data, 'Project Planning List retrieved successfully', Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function storeProjectPlanning(StoreProjectPlanningRequest $request)
+    {
+        try {
+            $data = $this->service->storeProjectPlanning($request);
+
+            return $this->successResponse($data, 'Project Planning created successfully', Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function updateProjectPlanning(UpdateProjectPlanningRequest $request, $id)
+    {
+        try {
+            $data = $this->service->updateProjectPlanning($request, $id);
+
+            return $this->successResponse($data, 'Project Planning updated successfully', Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function destroyProjectPlanning($id)
+    {
+        try {
+            $this->service->destroy($id);
+
+            return $this->successResponse(null, 'Project Planning deleted successfully', Response::HTTP_OK);
         } catch (\Throwable $th) {
             return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
         }

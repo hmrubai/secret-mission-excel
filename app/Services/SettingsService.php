@@ -8,6 +8,8 @@ use App\Models\ProjectType;
 use App\Models\WorkCalendar;
 use App\Models\Holiday;
 use App\Http\Traits\HelperTrait;
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
@@ -53,4 +55,40 @@ class SettingsService
 
         return Holiday::create($data);
     }
-}
+
+    public function getWeekendList(Request $request)
+    {
+        return WorkCalendar::where('is_active', true)->orderBy('id', 'desc')->get();
+    }
+
+    public function getHolidayList(Request $request)
+    {
+        return Holiday::where('is_active', true)->orderBy('date', 'asc')->get();
+    }
+
+    public function getWeekendDatesForYear(int $year)
+    {
+        $calendar = WorkCalendar::where('is_active', true)->firstOrFail();
+
+        $weekends = $calendar->weekends; // e.g. [5,6]
+
+        $start = Carbon::create($year, 1, 1);
+        $end   = Carbon::create($year, 12, 31);
+
+        $period = CarbonPeriod::create($start, $end);
+
+        $dates = [];
+
+        foreach ($period as $date) {
+            if (in_array($date->dayOfWeek, $weekends)) {
+                $dates[] = $date->toDateString();
+            }
+        }
+
+        return $data = [
+            'year'     => $year,
+            'weekends' => $weekends,
+            'dates'    => $dates,
+        ];
+    }
+}   
