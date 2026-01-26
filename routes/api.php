@@ -49,9 +49,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/add-department', [SettingsController::class, 'addDepartment']);
     Route::post('/add-designation', [SettingsController::class, 'addDesignation']);
 
-    //Project Manpower added
+    //Project Manpower Routes (Add/Remove Users to/from Project)
     Route::post('/add-user-to-project', [SettingsController::class, 'addUserToProject']);
     Route::get('/project-manpower-list/{project_id}', [SettingsController::class, 'listProjectManpower']);
+    Route::post('/remove-user-from-project', [SettingsController::class, 'removeFromTheProject']);
 
     // Logout Route
     Route::post('/logout', [AuthController::class, 'logout']);

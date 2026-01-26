@@ -131,4 +131,15 @@ class ProjectPlanningController extends Controller
             return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function removeFromTheProject(Request $request)
+    {
+        try {
+            $data = $this->service->removeFromTheProject($request);
+
+            return $this->successResponse($data, 'User removed successfully', Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

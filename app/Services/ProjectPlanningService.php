@@ -136,6 +136,10 @@ class ProjectPlanningService
         $projectId = $request->project_id ?? null;
         $userId = $request->user_id ?? null;
 
+        if (!$projectId || !$userId) {
+            throw new \InvalidArgumentException('Project ID and User ID are required.');
+        }
+
         return ProjectManpower::updateOrCreate([
             'project_id' => $projectId, 
             'user_id' => $userId
@@ -147,6 +151,27 @@ class ProjectPlanningService
         return ProjectManpower::with('user')
             ->where('project_id', $projectId)
             ->get();
+    }
+
+    public function removeFromTheProject($request)
+    {
+        $projectId = $request->project_id ?? null;
+        $userId = $request->user_id ?? null;
+
+        if (!$projectId || !$userId) {
+            throw new \InvalidArgumentException('Project ID and User ID are required.');
+        }
+
+        $projectManpower = ProjectManpower::where('project_id', $projectId)
+            ->where('user_id', $userId)
+            ->first();
+
+        if ($projectManpower) {
+            $projectManpower->delete();
+            return true;
+        }
+
+        return false;
     }
 
 }
