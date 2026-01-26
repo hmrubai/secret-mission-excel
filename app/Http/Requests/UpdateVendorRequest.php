@@ -28,18 +28,15 @@ class UpdateVendorRequest extends FormRequest
             'email' => 'nullable|email',
             'phone' => 'nullable|string|max:50',
             'website' => 'nullable|url',
-
             'company_name' => 'nullable|string|max:255',
             'tax_id' => 'nullable|string|max:100',
-
             'address_line_1' => 'nullable|string|max:255',
             'address_line_2' => 'nullable|string|max:255',
             'city' => 'nullable|string|max:100',
             'state' => 'nullable|string|max:100',
             'country' => 'nullable|string|max:100',
             'postal_code' => 'nullable|string|max:20',
-
-            'status' => 'required|in:active,inactive',
+            'is_active' => 'sometimes|boolean',
         ];
     }
 }
