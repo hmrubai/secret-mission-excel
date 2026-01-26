@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Traits\HelperTrait;
+use App\Http\Requests\StoreProjectTypeRequest;
+use App\Http\Requests\StoreDesignationRequest;
+use App\Http\Requests\StoreDepartmentRequest;
 use Illuminate\Validation\ValidationException;
 use App\Services\SettingsService;
 
@@ -45,6 +48,39 @@ class SettingsController extends Controller
             $data = $this->service->getProjectTypeList($request);
 
             return $this->successResponse($data, 'Project Type List successful', Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function addProjectType(StoreProjectTypeRequest $request)
+    {
+        try {
+            $data = $this->service->addProjectType($request);
+
+            return $this->successResponse($data, 'Project Type added successfully', Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function addDepartment(StoreDepartmentRequest $request)
+    {
+        try {
+            $data = $this->service->addDepartment($request);
+
+            return $this->successResponse($data, 'Department added successfully', Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function addDesignation(StoreDesignationRequest $request)
+    {
+        try {
+            $data = $this->service->addDesignation($request);
+
+            return $this->successResponse($data, 'Designation added successfully', Response::HTTP_OK);
         } catch (\Throwable $th) {
             return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
         }

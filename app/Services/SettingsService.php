@@ -34,6 +34,39 @@ class SettingsService
         return ProjectType::where('is_active', true)->orderBy('name', 'asc')->get();
     }
 
+    public function addProjectType(Request $request)
+    {
+        $fillable = (new ProjectType())->getFillable();
+
+        $data = $request->only($fillable);
+
+        $data['created_at'] = now();
+
+        return ProjectType::create($data);
+    }
+
+    public function addDepartment(Request $request)
+    {
+        $fillable = (new Department())->getFillable();
+
+        $data = $request->only($fillable);
+
+        $data['created_at'] = now();
+
+        return Department::create($data);
+    }
+
+    public function addDesignation(Request $request)
+    {
+        $fillable = (new Designation())->getFillable();
+
+        $data = $request->only($fillable);
+
+        $data['created_at'] = now();
+
+        return Designation::create($data);
+    }
+
     public function addWeekend(Request $request)
     {
         $fillable = (new WorkCalendar())->getFillable();

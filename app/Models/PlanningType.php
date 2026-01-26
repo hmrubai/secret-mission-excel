@@ -27,8 +27,8 @@ class PlanningType extends Model
         });
     }
 
-    // public function plannings()
-    // {
-    //     return $this->hasMany(ProjectPlanning::class);
-    // }
+    public function plannings()
+    {
+        return $this->hasMany(ProjectPlanning::class);
+    }
 }

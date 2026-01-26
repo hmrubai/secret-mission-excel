@@ -45,7 +45,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/holiday-list', [SettingsController::class, 'getHolidayList']);
     Route::get('/weekend-list', [SettingsController::class, 'getWeekendList']);
     Route::get('/get-weekend-dates/{year}', [SettingsController::class, 'getWeekendDatesForYear']);
+    Route::post('/add-project-type', [SettingsController::class, 'addProjectType']);
+    Route::post('/add-department', [SettingsController::class, 'addDepartment']);
+    Route::post('/add-designation', [SettingsController::class, 'addDesignation']);
 
+    // Logout Route
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
