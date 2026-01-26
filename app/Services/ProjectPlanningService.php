@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\PlanningType;
 use App\Models\ProjectPlanning;
 use App\Models\ProjectManpower;
+use App\Models\ProjectModule;
 use App\Http\Traits\HelperTrait;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
@@ -178,6 +179,44 @@ class ProjectPlanningService
         }
 
         return false;
+    }
+
+    public function storeProjectModule(Request $request)
+    {
+        return ProjectModule::create([
+            'project_id'         => $request->project_id,
+            'name'               => $request->name,
+            'description'        => $request->description,
+            'estimated_days'     => $request->estimated_days,
+            'created_by'         => Auth::id(),
+        ]);
+    }
+
+    public function updateProjectModule(Request $request, int $id)
+    {
+        $module = ProjectModule::findOrFail($id);
+
+        $data = array_filter(
+            $request->only((new ProjectModule())->getFillable()),
+            fn ($v) => $v !== null
+        );
+
+        $module->update($data);
+
+        return $module;
+    }
+
+    public function destroyProjectModule(int $id)
+    {
+        return ProjectModule::findOrFail($id)->delete();
+    }
+
+    public function projectModulesList(int $projectId)
+    {
+        return ProjectModule::where('project_id', $projectId)
+            ->with(['project', 'creator'])
+            ->orderBy('created_at')
+            ->get();
     }
 
 }

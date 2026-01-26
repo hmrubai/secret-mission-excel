@@ -9,6 +9,8 @@ use App\Http\Requests\StorePlanningTypeRequest;
 use App\Http\Requests\UpdatePlanningTypeRequest;
 use App\Http\Requests\StoreProjectPlanningRequest;
 use App\Http\Requests\UpdateProjectPlanningRequest;
+use App\Http\Requests\StoreProjectModuleRequest;
+use App\Http\Requests\UpdateProjectModuleRequest;
 use Illuminate\Validation\ValidationException;
 use App\Services\ProjectPlanningService;
 
@@ -138,6 +140,50 @@ class ProjectPlanningController extends Controller
             $data = $this->service->removeFromTheProject($request);
 
             return $this->successResponse($data, 'User removed successfully', Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function storeProjectModule(StoreProjectModuleRequest $request)
+    {
+        try {
+            $data = $this->service->storeProjectModule($request);
+
+            return $this->successResponse($data, 'User added successfully', Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function updateProjectModule(UpdateProjectModuleRequest $request, $id)
+    {
+        try {
+            $data = $this->service->updateProjectModule($request, $id);
+
+            return $this->successResponse($data, 'User updated successfully', Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function deleteProjectModule($id)
+    {
+        try {
+            $this->service->destroyProjectModule($id);
+
+            return $this->successResponse(null, 'Project Module deleted successfully', Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function projectModuleList($projectId)
+    {
+        try {
+            $data = $this->service->projectModulesList($projectId);
+
+            return $this->successResponse($data, 'Project Module List successful', Response::HTTP_OK);
         } catch (\Throwable $th) {
             return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
         }

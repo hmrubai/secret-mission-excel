@@ -180,13 +180,34 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * @property-read \App\Models\Project|null $project
- * @property-read \App\Models\User|null $user
+ * @property int $id
+ * @property int $project_id
+ * @property int $user_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Project $project
+ * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectManpower newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectManpower newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectManpower query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectManpower whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectManpower whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectManpower whereProjectId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectManpower whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectManpower whereUserId($value)
  */
 	class ProjectManpower extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * @property-read \App\Models\User|null $creator
+ * @property-read \App\Models\Project|null $project
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectModule newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectModule newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectModule query()
+ */
+	class ProjectModule extends \Eloquent {}
 }
 
 namespace App\Models{
