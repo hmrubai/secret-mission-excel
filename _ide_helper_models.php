@@ -59,9 +59,23 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * @property int $id
+ * @property \Illuminate\Support\Carbon $date
+ * @property string $title
+ * @property string $type
+ * @property bool $is_active
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Holiday newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Holiday newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Holiday query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Holiday whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Holiday whereDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Holiday whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Holiday whereIsActive($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Holiday whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Holiday whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Holiday whereUpdatedAt($value)
  */
 	class Holiday extends \Eloquent {}
 }
@@ -75,6 +89,8 @@ namespace App\Models{
  * @property int $is_active
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ProjectPlanning> $plannings
+ * @property-read int|null $plannings_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanningType newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanningType newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanningType query()
@@ -164,11 +180,48 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * @property-read \App\Models\PlanningType|null $planningType
  * @property-read \App\Models\Project|null $project
+ * @property-read \App\Models\User|null $user
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectManpower newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectManpower newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectManpower query()
+ */
+	class ProjectManpower extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * @property int $id
+ * @property int $project_id
+ * @property int $planning_type_id
+ * @property string|null $description
+ * @property \Illuminate\Support\Carbon|null $start_date
+ * @property \Illuminate\Support\Carbon|null $end_date
+ * @property int|null $duration_days
+ * @property bool $exclude_weekends
+ * @property bool $exclude_holidays
+ * @property int $progress
+ * @property string $status
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\PlanningType $planningType
+ * @property-read \App\Models\Project $project
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectPlanning newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectPlanning newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectPlanning query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectPlanning whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectPlanning whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectPlanning whereDurationDays($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectPlanning whereEndDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectPlanning whereExcludeHolidays($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectPlanning whereExcludeWeekends($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectPlanning whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectPlanning wherePlanningTypeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectPlanning whereProgress($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectPlanning whereProjectId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectPlanning whereStartDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectPlanning whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectPlanning whereUpdatedAt($value)
  */
 	class ProjectPlanning extends \Eloquent {}
 }
@@ -295,9 +348,23 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * @property int $id
+ * @property array<array-key, mixed> $weekends
+ * @property string $work_start_time
+ * @property string $work_end_time
+ * @property bool $is_active
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkCalendar newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkCalendar newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkCalendar query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkCalendar whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkCalendar whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkCalendar whereIsActive($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkCalendar whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkCalendar whereWeekends($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkCalendar whereWorkEndTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkCalendar whereWorkStartTime($value)
  */
 	class WorkCalendar extends \Eloquent {}
 }

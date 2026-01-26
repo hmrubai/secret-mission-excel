@@ -109,4 +109,26 @@ class ProjectPlanningController extends Controller
             return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function addUserToProject(Request $request)
+    {
+        try {
+            $data = $this->service->addUserToProject($request);
+
+            return $this->successResponse($data, 'User added successfully', Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function listProjectManpower(Request $request, $project_id)
+    {
+        try {
+            $data = $this->service->listProjectManpower($project_id);
+
+            return $this->successResponse($data, 'Project User list successful', Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

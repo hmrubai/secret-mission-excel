@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\PlanningType;
 use App\Models\ProjectPlanning;
+use App\Models\ProjectManpower;
 use App\Http\Traits\HelperTrait;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
@@ -128,6 +129,24 @@ class ProjectPlanningService
     {
         $projectPlanning = ProjectPlanning::findOrFail($id);
         return $projectPlanning->delete();
+    }
+
+    public function addUserToProject(Request $request)
+    {
+        $projectId = $request->project_id ?? null;
+        $userId = $request->user_id ?? null;
+
+        return ProjectManpower::updateOrCreate([
+            'project_id' => $projectId, 
+            'user_id' => $userId
+        ]);
+    }
+
+    public function listProjectManpower(int $projectId)
+    {
+        return ProjectManpower::with('user')
+            ->where('project_id', $projectId)
+            ->get();
     }
 
 }
