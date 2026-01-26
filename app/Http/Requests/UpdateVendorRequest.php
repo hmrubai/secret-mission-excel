@@ -21,7 +21,7 @@ class UpdateVendorRequest extends FormRequest
      */
     public function rules(): array
     {
-        $vendorId = $this->route('vendors')->id;
+        // $vendorId = $this->route('vendors')->id;
 
         return [
             'name' => 'required|string|max:255',
