@@ -140,6 +140,12 @@ class ProjectPlanningService
             throw new \InvalidArgumentException('Project ID and User ID are required.');
         }
 
+        if (ProjectManpower::where('project_id', $projectId)
+            ->where('user_id', $userId)
+            ->exists()) {
+            throw new \InvalidArgumentException('User is already assigned to the project.');
+        }
+
         return ProjectManpower::updateOrCreate([
             'project_id' => $projectId, 
             'user_id' => $userId
