@@ -22,6 +22,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     
     // Vendors Routes
     Route::apiResource('/vendors', VendorController::class);
+    Route::post('/update-vendor/{id}', [VendorController::class, 'update']);
 
     // Projects Routes
     Route::apiResource('/projects', ProjectController::class);
