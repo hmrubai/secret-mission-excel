@@ -183,11 +183,24 @@ class ProjectPlanningService
 
     public function storeProjectModule(Request $request)
     {
+        if (!$request->project_id || !$request->name) {
+            throw new \InvalidArgumentException('Project ID and Module Name are required.');
+        }
+
+        if (ProjectModule::where('project_id', $request->project_id)
+            ->where('name', $request->name)
+            ->exists()) {
+            throw new \InvalidArgumentException('Module with the same name already exists for the project.');
+        }
+
         return ProjectModule::create([
             'project_id'         => $request->project_id,
             'name'               => $request->name,
             'description'        => $request->description,
             'estimated_days'     => $request->estimated_days,
+            'status'             => $request->status ?? 'pending',
+            'is_completed'       => $request->is_completed ?? false,
+            'completed_at'       => $request->completed_at ?? null,
             'created_by'         => Auth::id(),
         ]);
     }

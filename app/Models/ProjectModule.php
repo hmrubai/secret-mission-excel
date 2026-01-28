@@ -11,6 +11,9 @@ class ProjectModule extends Model
         'name',
         'description',
         'estimated_days',
+        'status',
+        'is_completed',
+        'completed_at',
         'created_by',
     ];
 
@@ -24,7 +27,12 @@ class ProjectModule extends Model
     }
 
     public function creator()
-    {
+                {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
     }
 }

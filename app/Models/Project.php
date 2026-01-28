@@ -50,4 +50,9 @@ class Project extends Model
     {
         return $this->hasMany(ProjectHistory::class)->latest();
     }
+
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
+    }
 }

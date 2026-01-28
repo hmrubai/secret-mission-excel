@@ -26,6 +26,9 @@ class StoreProjectModuleRequest extends FormRequest
             'name'                => 'required|string|max:255',
             'description'         => 'nullable|string',
             'estimated_days'      => 'required|integer|min:1',
+            'status'              => 'nullable|in:draft,pending,in_progress,in_review,completed,blocked',
+            'is_completed'        => 'nullable|boolean',
+            'completed_at'        => 'nullable|date',
         ];
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectPlanningController;
+use App\Http\Controllers\TaskController;
 use Symfony\Component\HttpKernel\Profiler\Profile;
 
 // Public
@@ -59,6 +60,16 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/update-project-module/{id}', [ProjectPlanningController::class, 'updateProjectModule']);
     Route::delete('/delete-project-module/{id}', [ProjectPlanningController::class, 'deleteProjectModule']);
     Route::get('/project-module-list/{project_id}', [ProjectPlanningController::class, 'projectModuleList']);
+
+    // Task Routes
+    Route::post('/add-task', [TaskController::class, 'addTasks']);
+    Route::post('/update-task/{id}', [TaskController::class, 'updateTask']);
+    Route::post('/update-progress-status/{task_id}', [TaskController::class, 'updateProgressAndStatus']);
+    // Route::get('/task-list/{project_id}', [TaskController::class, 'taskList']);
+    // Route::delete('/delete-task/{id}', [TaskController::class, 'deleteTask']);
+
+    Route::post('/assignMemberToTask', [TaskController::class, 'assignMemberToTask']);
+    Route::post('/removeMemberFromTask', [TaskController::class, 'removeMemberFromTask']);
 
     // Logout Route
     Route::post('/logout', [AuthController::class, 'logout']);

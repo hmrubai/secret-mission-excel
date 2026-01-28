@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateProjectModuleRequest extends FormRequest
+class AddRemoveMemberFromProjectRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,12 +22,10 @@ class UpdateProjectModuleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'               => 'sometimes|string|max:255',
-            'description'        => 'nullable|string',
-            'estimated_days'     => 'sometimes|integer|min:1',
-            'status'             => 'sometimes|in:draft,pending,in_progress,in_review,completed,blocked',
-            'is_completed'       => 'nullable|boolean',
-            'completed_at'       => 'nullable|date',
+            'task_id' => 'required|exists:tasks,id',
+            'user_id' => 'required|exists:users,id',
+            'instructions' => 'nullable|string',
+            'is_primary' => 'nullable|boolean',
         ];
     }
 }

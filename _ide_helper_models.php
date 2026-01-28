@@ -201,11 +201,27 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * @property-read \App\Models\User|null $creator
- * @property-read \App\Models\Project|null $project
+ * @property int $id
+ * @property int $project_id
+ * @property string $name
+ * @property string|null $description
+ * @property int $estimated_days
+ * @property int $created_by
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\User $creator
+ * @property-read \App\Models\Project $project
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectModule newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectModule newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectModule query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectModule whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectModule whereCreatedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectModule whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectModule whereEstimatedDays($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectModule whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectModule whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectModule whereProjectId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectModule whereUpdatedAt($value)
  */
 	class ProjectModule extends \Eloquent {}
 }
@@ -266,6 +282,41 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ProjectType whereUpdatedAt($value)
  */
 	class ProjectType extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $assignees
+ * @property-read int|null $assignees_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\TaskAssignment> $assignments
+ * @property-read int|null $assignments_count
+ * @property-read \App\Models\User|null $creator
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\TaskLog> $logs
+ * @property-read int|null $logs_count
+ * @property-read \App\Models\Project|null $project
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Task newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Task newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Task query()
+ */
+	class Task extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TaskAssignment newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TaskAssignment newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TaskAssignment query()
+ */
+	class TaskAssignment extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TaskLog newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TaskLog newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TaskLog query()
+ */
+	class TaskLog extends \Eloquent {}
 }
 
 namespace App\Models{

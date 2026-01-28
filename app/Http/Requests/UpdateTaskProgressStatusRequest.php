@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateProjectModuleRequest extends FormRequest
+class UpdateTaskProgressStatusRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,12 +22,8 @@ class UpdateProjectModuleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'               => 'sometimes|string|max:255',
-            'description'        => 'nullable|string',
-            'estimated_days'     => 'sometimes|integer|min:1',
-            'status'             => 'sometimes|in:draft,pending,in_progress,in_review,completed,blocked',
-            'is_completed'       => 'nullable|boolean',
-            'completed_at'       => 'nullable|date',
+            'status' => 'required|in:draft,pending,in_progress,in_review,completed,blocked',
+            'progress' => 'nullable|integer|min:0|max:100',
         ];
     }
 }

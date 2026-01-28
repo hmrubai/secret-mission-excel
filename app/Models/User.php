@@ -46,6 +46,16 @@ class User extends Authenticatable
         return $this->belongsTo(Designation::class);
     }
 
+    public function createdTasks()
+    {
+        return $this->hasMany(Task::class, 'created_by');
+    }
+
+    public function assignedTasks()
+    {
+        return $this->belongsToMany(Task::class, 'task_assignments');
+    }
+
     protected function casts(): array
     {
         return [
