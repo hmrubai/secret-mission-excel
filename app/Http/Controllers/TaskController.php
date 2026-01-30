@@ -77,6 +77,17 @@ class TaskController extends Controller
         }
     }
 
+    public function markTaskAsCompleted($task_id)
+    {
+        try {
+            $data = $this->service->markTaskAsCompleted($task_id);
+
+            return $this->successResponse($data, 'Task marked as completed successfully', Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
     public function assignMemberToTask(AddRemoveMemberFromProjectRequest $request)
     {
         try {

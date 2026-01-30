@@ -67,10 +67,6 @@ class TaskService
             $data['status'] = 'pending';
         }
 
-        // Handle file uploads
-        //$data['thumbnail'] = $this->ftpFileUpload($request, 'thumbnail', 'task');
-        //$data['cover_picture'] = $this->ftpFileUpload($request, 'cover_picture', 'task');
-
         // Add created_by and created_at fields for new records
         if ($isNew) {
             $data['created_by'] = Auth::id();
@@ -123,30 +119,23 @@ class TaskService
         */
 
         $task->update($data);
-
         return $task->fresh();
     }
 
-    // public function assignTasksToUsers(Request $request): void
-    // {
-    //     $user_id = $request->user_id;
-    //     $task_id = $request->task_id;
+    public function markTaskAsCompleted($task_id)
+    {   
+        $task = Task::findOrFail($task_id);
 
-    //     $task = Task::findOrFail($task_id);
+        if ($task->status === 'completed') {
+            return $task->fresh();
+        }
 
-    //     if (empty($user_id)) {
-    //         throw new \InvalidArgumentException('User ID cannot be empty.');
-    //     }
+        $task->status = 'completed';
+        // Other fields like is_completed, completed_at, progress are handled in the model booted()
+        $task->save();
 
-    //     TaskAssignment::updateOrCreate([
-    //         'task_id' => $task_id,
-    //         'user_id' => $user_id,
-    //         'is_primary' => $request->is_primary ?? false,
-    //         'assigned_at' => now(),
-    //     ]);
-
-    //     $task->assignees()->syncWithoutDetaching([$user_id]);
-    // }
+        return $task->fresh();
+    }
 
     public function assignMemberToTask(Request $request)
     {

@@ -65,6 +65,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/add-task', [TaskController::class, 'addTasks']);
     Route::post('/update-task/{id}', [TaskController::class, 'updateTask']);
     Route::post('/update-progress-status/{task_id}', [TaskController::class, 'updateProgressAndStatus']);
+    Route::post('/mark-task-completed/{task_id}', [TaskController::class, 'markTaskAsCompleted']);
     // Route::get('/task-list/{project_id}', [TaskController::class, 'taskList']);
     // Route::delete('/delete-task/{id}', [TaskController::class, 'deleteTask']);
 
