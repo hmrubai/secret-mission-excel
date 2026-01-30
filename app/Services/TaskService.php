@@ -141,6 +141,8 @@ class TaskService
     {
         $user_id = $request->user_id;
         $task_id = $request->task_id;
+        $instructions = $request->instructions ?? null;
+        $is_primary = $request->is_primary ?? false;
 
         if (empty($user_id)) {
             throw new \InvalidArgumentException('User ID cannot be empty.');
@@ -152,7 +154,11 @@ class TaskService
 
         $task = Task::findOrFail($task_id);
 
-        $task->assignUser($user_id);
+        if ($task->assignees()->where('user_id', $user_id)->exists()) {
+            throw new \InvalidArgumentException('User is already assigned to the task.');
+        }
+
+        $task->assignUser($user_id, $is_primary, $instructions);
 
         return true;
     }

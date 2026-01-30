@@ -71,12 +71,13 @@ class Task extends Model
     /**
      * Assign a user to the task
      */
-    public function assignUser(int $userId, bool $isPrimary = false): void
+    public function assignUser(int $userId, bool $isPrimary = false, $instructions = null): void
     {
         $this->assignees()->syncWithoutDetaching([
             $userId => [
                 'is_primary' => $isPrimary,
                 'assigned_at' => now(),
+                'instructions' => $instructions,
             ]
         ]);
 

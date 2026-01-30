@@ -69,8 +69,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Route::get('/task-list/{project_id}', [TaskController::class, 'taskList']);
     // Route::delete('/delete-task/{id}', [TaskController::class, 'deleteTask']);
 
-    Route::post('/assignMemberToTask', [TaskController::class, 'assignMemberToTask']);
-    Route::post('/removeMemberFromTask', [TaskController::class, 'removeMemberFromTask']);
+    Route::post('/assign-member-to-task', [TaskController::class, 'assignMemberToTask']);
+    Route::post('/remove-member-from-task', [TaskController::class, 'removeMemberFromTask']);
 
     // Logout Route
     Route::post('/logout', [AuthController::class, 'logout']);
