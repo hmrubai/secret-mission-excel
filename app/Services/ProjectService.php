@@ -111,4 +111,15 @@ class ProjectService
         $project = Project::findOrFail($id);
         return $project->delete();
     }
+
+    public function myProjects()
+    {
+        $userId = Auth::id();
+
+        $projects = Project::whereHas('manpower', function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        })->get();
+
+        return $projects;
+    }
 }

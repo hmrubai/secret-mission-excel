@@ -7,7 +7,6 @@ use Illuminate\Http\Response;
 use App\Http\Traits\HelperTrait;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
-use App\Http\Requests\StorePlanningTypeRequest;
 use App\Http\Requests\UpdatePlanningTypeRequest;
 use Illuminate\Validation\ValidationException;
 use App\Services\ProjectService;
@@ -72,6 +71,17 @@ class ProjectController extends Controller
             $this->service->destroy($id);
 
             return $this->successResponse(null, 'Project deleted successfully', Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function myProjects()
+    {
+        try {
+            $data = $this->service->myProjects();
+
+            return $this->successResponse($data, 'My Projects retrieved successfully', Response::HTTP_OK);
         } catch (\Throwable $th) {
             return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
         }

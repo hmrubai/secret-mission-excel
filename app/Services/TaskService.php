@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Task;
 use App\Models\TaskAssignment;
+use App\Models\ProjectManpower;
 use App\Http\Traits\HelperTrait;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
@@ -179,6 +180,41 @@ class TaskService
         $task = Task::findOrFail($task_id);
 
         $task->removeUser($user_id);
+
+        return true;
+    }
+
+    public function assignSelfToTask(Request $request): bool
+    {
+        $user_id = Auth::id();
+        $task_id = $request->task_id;
+        $instructions = $request->instructions ?? null;
+        $is_primary = $request->is_primary ?? false;
+
+        if (empty($user_id)) {
+            throw new \InvalidArgumentException('User ID is required.');
+        }
+
+        if (empty($task_id)) {
+            throw new \InvalidArgumentException('Task ID is required.');
+        }
+
+        $task = Task::findOrFail($task_id);
+
+        // 1️⃣ Check if user is engaged in this project
+        $isEngaged = ProjectManpower::where('project_id', $task->project_id)
+            ->where('user_id', $user_id)
+            ->exists();
+
+        if (!$isEngaged) {
+            throw new \InvalidArgumentException('You are not engaged in this project.');
+        }
+
+        if ($task->assignees()->where('user_id', $user_id)->exists()) {
+            throw new \InvalidArgumentException('User is already assigned to the task.');
+        }
+
+        $task->assignUser($user_id, $is_primary, $instructions);
 
         return true;
     }

@@ -46,6 +46,16 @@ class Project extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
 
+    public function ProjectModules()
+    {
+        return $this->hasMany(ProjectModule::class)->latest();
+    }
+
+    public function ProjectPlanning()
+    {
+        return $this->hasMany(ProjectPlanning::class)->latest();
+    }
+
     public function histories()
     {
         return $this->hasMany(ProjectHistory::class)->latest();

@@ -54,6 +54,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/add-user-to-project', [ProjectPlanningController::class, 'addUserToProject']);
     Route::get('/project-manpower-list/{project_id}', [ProjectPlanningController::class, 'listProjectManpower']);
     Route::post('/remove-user-from-project', [ProjectPlanningController::class, 'removeFromTheProject']);
+    Route::get('/my-projects', [ProjectController::class, 'myProjects']);
 
     // Project Module Routes
     Route::post('/add-project-module', [ProjectPlanningController::class, 'storeProjectModule']);
@@ -71,6 +72,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::post('/assign-member-to-task', [TaskController::class, 'assignMemberToTask']);
     Route::post('/remove-member-from-task', [TaskController::class, 'removeMemberFromTask']);
+    Route::post('/assign-self-to-task', [TaskController::class, 'assignSelfToTask']);
 
     // Logout Route
     Route::post('/logout', [AuthController::class, 'logout']);

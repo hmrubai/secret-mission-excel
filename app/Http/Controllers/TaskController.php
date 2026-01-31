@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use App\Http\Traits\HelperTrait;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
+use App\Http\Requests\AssignSelfToTaskRequest;
 use App\Http\Requests\UpdateTaskProgressStatusRequest;
 use App\Http\Requests\AddRemoveMemberFromProjectRequest;
 use Illuminate\Validation\ValidationException;
@@ -105,6 +106,17 @@ class TaskController extends Controller
             $data = $this->service->removeMemberFromTask($request);
 
             return $this->successResponse($data, 'User removed from task successfully', Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function assignSelfToTask(AssignSelfToTaskRequest $request)
+    {
+        try {
+            $data = $this->service->assignSelfToTask($request);
+
+            return $this->successResponse($data, 'User assigned to task successfully', Response::HTTP_OK);
         } catch (\Throwable $th) {
             return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
         }
