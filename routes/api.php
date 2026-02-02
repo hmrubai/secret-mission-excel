@@ -61,6 +61,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/update-project-module/{id}', [ProjectPlanningController::class, 'updateProjectModule']);
     Route::delete('/delete-project-module/{id}', [ProjectPlanningController::class, 'deleteProjectModule']);
     Route::get('/project-module-list/{project_id}', [ProjectPlanningController::class, 'projectModuleList']);
+    Route::get('/my-project-list', [ProjectController::class, 'myProjects']);
 
     // Task Routes
     Route::post('/add-task', [TaskController::class, 'addTasks']);

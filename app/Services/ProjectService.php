@@ -116,9 +116,20 @@ class ProjectService
     {
         $userId = Auth::id();
 
-        $projects = Project::whereHas('manpower', function ($query) use ($userId) {
+        $projects = Project::whereHas('projectManpower', function ($query) use ($userId) {
             $query->where('user_id', $userId);
-        })->get();
+        })
+        ->with([
+            'vendor', 
+            'projectType', 
+            'createdBy', 
+            'ProjectModules', 
+            'ProjectPlanning', 
+            'histories', 
+            'projectManpower',
+            'projectManpower.user:id,name,email,profile_picture,user_type,phone'
+        ])
+        ->get();
 
         return $projects;
     }
