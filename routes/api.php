@@ -49,6 +49,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/add-project-type', [SettingsController::class, 'addProjectType']);
     Route::post('/add-department', [SettingsController::class, 'addDepartment']);
     Route::post('/add-designation', [SettingsController::class, 'addDesignation']);
+    Route::post('/update-department/{id}', [SettingsController::class, 'updateDepartment']);
+    Route::post('/update-designation/{id}', [SettingsController::class, 'updateDesignation']);
 
     //Project Manpower Routes (Add/Remove Users to/from Project)
     Route::post('/add-user-to-project', [ProjectPlanningController::class, 'addUserToProject']);

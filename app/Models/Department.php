@@ -9,7 +9,7 @@ class Department extends Model
     protected $fillable = [
         'name',
         'code',
-        'status',
+        'is_active',
     ];
 
     public function users()

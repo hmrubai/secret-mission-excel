@@ -56,6 +56,21 @@ class SettingsService
         return Department::create($data);
     }
 
+    public function updateDepartment(Request $request, $id)
+    {
+        $department = Department::findOrFail($id);
+
+        $fillable = (new Department())->getFillable();
+
+        $data = $request->only($fillable);
+
+        $data['updated_at'] = now();
+
+        $department->update($data);
+
+        return $department;
+    }
+
     public function addDesignation(Request $request)
     {
         $fillable = (new Designation())->getFillable();
@@ -65,6 +80,21 @@ class SettingsService
         $data['created_at'] = now();
 
         return Designation::create($data);
+    }
+
+    public function updateDesignation(Request $request, $id)
+    {
+        $designation = Designation::findOrFail($id);
+
+        $fillable = (new Designation())->getFillable();
+
+        $data = $request->only($fillable);
+
+        $data['updated_at'] = now();
+
+        $designation->update($data);
+
+        return $designation;
     }
 
     public function addWeekend(Request $request)

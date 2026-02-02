@@ -8,6 +8,8 @@ use App\Http\Traits\HelperTrait;
 use App\Http\Requests\StoreProjectTypeRequest;
 use App\Http\Requests\StoreDesignationRequest;
 use App\Http\Requests\StoreDepartmentRequest;
+use App\Http\Requests\UpdateDepartmentRequest;
+use App\Http\Requests\UpdateDesignationRequest;
 use Illuminate\Validation\ValidationException;
 use App\Services\SettingsService;
 
@@ -75,12 +77,34 @@ class SettingsController extends Controller
         }
     }
 
+    public function updateDepartment(UpdateDepartmentRequest $request, $id)
+    {
+        try {
+            $data = $this->service->updateDepartment($request, $id);
+
+            return $this->successResponse($data, 'Department updated successfully', Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
     public function addDesignation(StoreDesignationRequest $request)
     {
         try {
             $data = $this->service->addDesignation($request);
 
             return $this->successResponse($data, 'Designation added successfully', Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function updateDesignation(UpdateDesignationRequest $request, $id)
+    {
+        try {
+            $data = $this->service->updateDesignation($request, $id);
+
+            return $this->successResponse($data, 'Designation updated successfully', Response::HTTP_OK);
         } catch (\Throwable $th) {
             return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
         }

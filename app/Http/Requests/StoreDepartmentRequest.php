@@ -24,7 +24,7 @@ class StoreDepartmentRequest extends FormRequest
         return [
             'name'   => ['required', 'string', 'max:255', 'unique:departments,name'],
             'code'   => ['required', 'string', 'max:50', 'unique:departments,code'],
-            'status' => ['sometimes', 'boolean'],
+            'is_active' => ['sometimes', 'boolean'],
         ];
     }
 }
