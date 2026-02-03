@@ -125,6 +125,7 @@ class ProjectService
             'createdBy', 
             'ProjectModules', 
             'ProjectPlanning', 
+            'ProjectPlanning.planningType:id,name,description', 
             'histories', 
             'projectManpower',
             'projectManpower.user:id,name,email,profile_picture,user_type,phone'
