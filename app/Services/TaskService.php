@@ -77,9 +77,14 @@ class TaskService
         return $data;
     }
 
-    public function show(int $id): Task
+    public function getTaskDetails(int $id): Task
     {
-        return Task::findOrFail($id);
+        return Task::with([
+            'module', 
+            'creator', 
+            'assignments',
+            'assignments.user:id,name,email,profile_picture,user_type,phone'
+        ])->findOrFail($id);
     }
 
     public function updateTask(Request $request, int $id)
@@ -136,6 +141,16 @@ class TaskService
         $task->save();
 
         return $task->fresh();
+    }
+
+    public function allTaskListByModule($project_module_id)
+    {
+        return Task::with([
+            'module', 
+            'creator', 
+            'assignments',
+            'assignments.user:id,name,email,profile_picture,user_type,phone'
+        ])->where('project_module_id', $project_module_id)->get();
     }
 
     public function assignMemberToTask(Request $request)

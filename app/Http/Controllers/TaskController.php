@@ -34,16 +34,16 @@ class TaskController extends Controller
         }
     }
 
-    // public function getTasks()
-    // {
-    //     try {
-    //         $data = $this->service->getTasks();
+    public function getTaskDetails($id)
+    {
+        try {
+            $data = $this->service->getTaskDetails($id);
 
-    //         return $this->successResponse($data, 'Tasks retrieved successfully', Response::HTTP_OK);
-    //     } catch (\Throwable $th) {
-    //         return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
-    //     }
-    // }
+            return $this->successResponse($data, 'Task details retrieved successfully', Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 
     // public function getTasksByUser($user_id)
     // {
@@ -84,6 +84,17 @@ class TaskController extends Controller
             $data = $this->service->markTaskAsCompleted($task_id);
 
             return $this->successResponse($data, 'Task marked as completed successfully', Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function allTaskListByModule($project_module_id)
+    {
+        try {
+            $data = $this->service->allTaskListByModule($project_module_id);
+
+            return $this->successResponse($data, 'Tasks retrieved successfully', Response::HTTP_OK);
         } catch (\Throwable $th) {
             return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
         }
