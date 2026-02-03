@@ -134,4 +134,19 @@ class ProjectService
 
         return $projects;
     }
+
+    public function projectDetails($project_id)
+    {
+        return Project::with([
+            'vendor', 
+            'projectType', 
+            'createdBy', 
+            'ProjectModules', 
+            'ProjectPlanning', 
+            'ProjectPlanning.planningType:id,name,description', 
+            'histories', 
+            'projectManpower',
+            'projectManpower.user:id,name,email,profile_picture,user_type,phone'
+        ])->findOrFail($project_id);
+    }
 }

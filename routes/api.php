@@ -56,7 +56,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/add-user-to-project', [ProjectPlanningController::class, 'addUserToProject']);
     Route::get('/project-manpower-list/{project_id}', [ProjectPlanningController::class, 'listProjectManpower']);
     Route::post('/remove-user-from-project', [ProjectPlanningController::class, 'removeFromTheProject']);
-    Route::get('/my-projects', [ProjectController::class, 'myProjects']);
 
     // Project Module Routes
     Route::post('/add-project-module', [ProjectPlanningController::class, 'storeProjectModule']);
@@ -64,6 +63,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::delete('/delete-project-module/{id}', [ProjectPlanningController::class, 'deleteProjectModule']);
     Route::get('/project-module-list/{project_id}', [ProjectPlanningController::class, 'projectModuleList']);
     Route::get('/my-project-list', [ProjectController::class, 'myProjects']);
+    Route::get('/project-details/{id}', [ProjectController::class, 'projectDetails']);
 
     // Task Routes
     Route::post('/add-task', [TaskController::class, 'addTasks']);
