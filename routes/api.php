@@ -54,6 +54,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     //Project Manpower Routes (Add/Remove Users to/from Project)
     Route::post('/add-user-to-project', [ProjectPlanningController::class, 'addUserToProject']);
+    Route::post('/add-multiple-users-to-project', [ProjectPlanningController::class, 'addMultipleUsersToProject']);
     Route::get('/project-manpower-list/{project_id}', [ProjectPlanningController::class, 'listProjectManpower']);
     Route::post('/remove-user-from-project', [ProjectPlanningController::class, 'removeFromTheProject']);
 
@@ -74,6 +75,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Route::delete('/delete-task/{id}', [TaskController::class, 'deleteTask']);
 
     Route::post('/assign-member-to-task', [TaskController::class, 'assignMemberToTask']);
+    // Route::post('/assign-multiple-member-to-task', [TaskController::class, 'assignMemberToTask']);
     Route::post('/remove-member-from-task', [TaskController::class, 'removeMemberFromTask']);
     Route::post('/assign-self-to-task', [TaskController::class, 'assignSelfToTask']);
 

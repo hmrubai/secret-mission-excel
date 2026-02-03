@@ -153,6 +153,63 @@ class ProjectPlanningService
         ]);
     }
 
+    // public function addMultipleUsersToProject(Request $request)
+    // {
+    //     $projectId = $request->project_id ?? null;
+    //     $userIds = $request->user_ids ?? [];
+
+    //     if (!$projectId || !sizeof($userIds)) {
+    //         throw new \InvalidArgumentException('Project ID and User ID are required.');
+    //     }
+
+    //     // if (ProjectManpower::where('project_id', $projectId)
+    //     //     ->where('user_id', $userId)
+    //     //     ->exists()) {
+    //     //     throw new \InvalidArgumentException('User is already assigned to the project.');
+    //     // }
+
+    //     return ProjectManpower::updateOrCreate([
+    //         'project_id' => $projectId, 
+    //         'user_id' => $userIds
+    //     ]);
+    // }
+
+    public function addMultipleUsersToProject(Request $request)
+    {
+        $projectId = $request->input('project_id');
+        $userIds   = $request->input('user_ids', []);
+
+        if (!$projectId || empty($userIds)) {
+            throw new \InvalidArgumentException('Project ID and User IDs are required.');
+        }
+
+        // Get already assigned users
+        $existingUserIds = ProjectManpower::where('project_id', $projectId)
+            ->whereIn('user_id', $userIds)
+            ->pluck('user_id')
+            ->toArray();
+
+        // Filter only new users
+        $newUserIds = array_diff($userIds, $existingUserIds);
+
+        if (empty($newUserIds)) {
+            throw new \InvalidArgumentException('All users are already assigned to the project.');
+        }
+
+        $insertData = array_map(function ($userId) use ($projectId) {
+            return [
+                'project_id' => $projectId,
+                'user_id'    => $userId,
+                'created_at'=> now(),
+                'updated_at'=> now(),
+            ];
+        }, $newUserIds);
+
+        ProjectManpower::insert($insertData);
+
+        return array_values($newUserIds);
+    }
+
     public function listProjectManpower(int $projectId)
     {
         return ProjectManpower::with('user')

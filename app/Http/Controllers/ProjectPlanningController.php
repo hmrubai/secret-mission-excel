@@ -11,6 +11,7 @@ use App\Http\Requests\StoreProjectPlanningRequest;
 use App\Http\Requests\UpdateProjectPlanningRequest;
 use App\Http\Requests\StoreProjectModuleRequest;
 use App\Http\Requests\UpdateProjectModuleRequest;
+use App\Http\Requests\AddMultipleUsersToProjectRequest;
 use Illuminate\Validation\ValidationException;
 use App\Services\ProjectPlanningService;
 
@@ -116,6 +117,17 @@ class ProjectPlanningController extends Controller
     {
         try {
             $data = $this->service->addUserToProject($request);
+
+            return $this->successResponse($data, 'User added successfully', Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function addMultipleUsersToProject(AddMultipleUsersToProjectRequest $request)
+    {
+        try {
+            $data = $this->service->addMultipleUsersToProject($request);
 
             return $this->successResponse($data, 'User added successfully', Response::HTTP_OK);
         } catch (\Throwable $th) {
