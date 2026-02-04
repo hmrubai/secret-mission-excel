@@ -112,7 +112,8 @@ class TaskService
     public function updateProgressAndStatus($request, int $taskId): Task 
     {
         $task = Task::findOrFail($taskId);
-        $data = $request->only(['status', 'progress']);
+        //$data = $request->only(['status', 'progress']);
+        $data = $request->only(['status']);
         // Remove nulls (PATCH-style behavior)
         $data = array_filter($data, fn ($v) => $v !== null);
 

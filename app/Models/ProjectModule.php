@@ -12,6 +12,7 @@ class ProjectModule extends Model
         'description',
         'estimated_days',
         'status',
+        'progress',
         'is_completed',
         'completed_at',
         'created_by',
@@ -19,6 +20,7 @@ class ProjectModule extends Model
 
     protected $casts = [
         'estimated_days' => 'integer',
+        'progress' => 'integer',
     ];
 
     public function project()

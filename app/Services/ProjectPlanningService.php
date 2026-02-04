@@ -153,27 +153,6 @@ class ProjectPlanningService
         ]);
     }
 
-    // public function addMultipleUsersToProject(Request $request)
-    // {
-    //     $projectId = $request->project_id ?? null;
-    //     $userIds = $request->user_ids ?? [];
-
-    //     if (!$projectId || !sizeof($userIds)) {
-    //         throw new \InvalidArgumentException('Project ID and User ID are required.');
-    //     }
-
-    //     // if (ProjectManpower::where('project_id', $projectId)
-    //     //     ->where('user_id', $userId)
-    //     //     ->exists()) {
-    //     //     throw new \InvalidArgumentException('User is already assigned to the project.');
-    //     // }
-
-    //     return ProjectManpower::updateOrCreate([
-    //         'project_id' => $projectId, 
-    //         'user_id' => $userIds
-    //     ]);
-    // }
-
     public function addMultipleUsersToProject(Request $request)
     {
         $projectId = $request->input('project_id');
@@ -256,6 +235,7 @@ class ProjectPlanningService
             'description'        => $request->description,
             'estimated_days'     => $request->estimated_days,
             'status'             => $request->status ?? 'pending',
+            'progress'           => $request->progress ?? 0,
             'is_completed'       => $request->is_completed ?? false,
             'completed_at'       => $request->completed_at ?? null,
             'created_by'         => Auth::id(),

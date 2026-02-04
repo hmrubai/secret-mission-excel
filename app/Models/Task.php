@@ -147,6 +147,8 @@ class Task extends Model
                 'action'  => 'created',
                 'new_value' => $task->fresh()->toArray(),
             ]);
+            
+            self::updateModuleProgress($task->project_module_id);
         });
 
         /**
@@ -159,6 +161,11 @@ class Task extends Model
 
             // Remove noise fields
             unset($changes['updated_at']);
+            
+            // Update module progress if status changed
+            if (isset($changes['status'])) {
+                self::updateModuleProgress($task->project_module_id);
+            }
 
             if (empty($changes)) {
                 return;
@@ -172,5 +179,45 @@ class Task extends Model
                 'new_value' => $changes,
             ]);
         });
+
+        /**
+         * AFTER DELETE
+         */
+        static::deleted(function (Task $task) {
+            self::updateModuleProgress($task->project_module_id);
+        });
+    }
+
+    private static function updateModuleProgress($projectModuleId)
+    {
+        if (!$projectModuleId) {
+            return;
+        }
+
+        $module = ProjectModule::find($projectModuleId);
+        if (!$module) {
+            return;
+        }
+
+        $totalTasks = Task::where('project_module_id', $projectModuleId)->count();
+        $completedTasks = Task::where('project_module_id', $projectModuleId)
+            ->where('status', 'completed')
+            ->count();
+
+        $progress = $totalTasks > 0 ? round(($completedTasks / $totalTasks) * 100) : 0;
+
+        $updateData = ['progress' => $progress];
+
+        if ($progress == 100) {
+            $updateData['status'] = 'completed';
+            $updateData['is_completed'] = true;
+            $updateData['completed_at'] = now();
+        }else{
+            $updateData['status'] = 'in_progress';
+            $updateData['is_completed'] = false;
+            $updateData['completed_at'] = null;
+        }
+
+        $module->update($updateData);
     }
 }
