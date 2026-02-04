@@ -35,7 +35,7 @@ class TaskDiscussionService
         return $this->paginateOrGet($query, $request);
     }
 
-    public function store(Request $request)
+    public function addTaskDiscussion(Request $request)
     {
         $data = $this->prepareTaskDiscussionData($request);
 

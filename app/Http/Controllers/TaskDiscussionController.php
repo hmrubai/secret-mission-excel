@@ -31,7 +31,17 @@ class TaskDiscussionController extends Controller
     public function store(StoreTaskDiscussionRequest $request)
     {
         try {
-            $taskDiscussion = $this->taskDiscussionService->store($request);
+            $taskDiscussion = $this->taskDiscussionService->addTaskDiscussion($request);
+            return $this->successResponse($taskDiscussion, 'Task Discussion created successfully');
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), 'Failed to create task discussion', 500);
+        }
+    }
+
+    public function addTaskDiscussion(StoreTaskDiscussionRequest $request)
+    {
+        try {
+            $taskDiscussion = $this->taskDiscussionService->addTaskDiscussion($request);
             return $this->successResponse($taskDiscussion, 'Task Discussion created successfully');
         } catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), 'Failed to create task discussion', 500);
