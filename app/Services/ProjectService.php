@@ -149,4 +149,83 @@ class ProjectService
             'projectManpower.user:id,name,email,profile_picture,user_type,phone'
         ])->findOrFail($project_id);
     }
+
+    public function projectDetailsForCalender($project_id)
+    {
+        $project = Project::with([
+            'vendor', 
+            'projectType', 
+            'createdBy', 
+            'ProjectModules', 
+            'ProjectPlanning', 
+            'ProjectPlanning.planningType:id,name,description', 
+            'histories', 
+            'projectManpower',
+            'projectManpower.user:id,name,email,profile_picture,user_type,phone',
+            'tasks',
+            'tasks.assignments',
+            'tasks.assignments.user:id,name,email,profile_picture,user_type,phone',
+        ])->findOrFail($project_id);
+
+        $totalTasks = $project->tasks->count();
+        $completedTasks = $project->tasks->where('status', 'completed')->count();
+        
+        $projectModules = $project->ProjectModules;
+        $pendingModules = $projectModules->where('status', 'pending')->count();
+        $inProgressModules = $projectModules->where('status', 'in_progress')->count(); // Assuming 'in_progress' is the status string
+        $completedModules = $projectModules->where('status', 'completed')->count(); // Assuming 'completed' is the status string
+        
+        // You can attach these as custom attributes or return a new structure.
+        // Attaching to the object as dynamic properties
+        $project->total_tasks_count = $totalTasks;
+        $project->completed_tasks_count = $completedTasks;
+        $project->task_completion_percentage = $totalTasks > 0 ? round(($completedTasks / $totalTasks) * 100, 2) : 0;
+        $project->modules_pending_count = $pendingModules;
+        $project->modules_in_progress_count = $inProgressModules;
+        $project->modules_completed_count = $completedModules;
+
+        // 1. Task Completion Graph (Last 15 days)
+        $graphData = [
+            'dates' => [],
+            'values' => []
+        ];
+        
+        // Ensure Carbon is imported or use full path properly. HelperTrait likely uses Carbon.
+        // Assuming Carbon\Carbon is accessible or alias present. The file uses Carbon\Carbon.
+        for ($i = 14; $i >= 0; $i--) {
+            $date = now()->subDays($i)->format('Y-m-d');
+            
+            // Count completed tasks for this specific date
+            // Note: This query inside loop might be N+1 issue if efficient, but for single project details it's acceptable or can be optimized by grouping.
+            // Optimization: Filter from the already loaded tasks collection if tasks list is not huge, or run a single aggregate query.
+            // Since we have $project->tasks eager loaded, let's filter the collection to avoid DB hits in loop.
+            
+            $count = $project->tasks->filter(function ($task) use ($date) {
+                return $task->status === 'completed' && 
+                       $task->completed_at && 
+                       \Carbon\Carbon::parse($task->completed_at)->format('Y-m-d') === $date;
+            })->count();
+
+            $graphData['dates'][] = $date;
+            $graphData['values'][] = $count;
+        }
+        $project->task_completion_graph = $graphData;
+
+        // 2. Gantt Chart Data
+        $ganttData = $project->tasks->map(function ($task) {
+            return [
+                'id' => $task->id,
+                'name' => $task->title,
+                'start' => $task->start_date ? $task->start_date->format('Y-m-d') : null,
+                'end' => $task->deadline ? $task->deadline->format('Y-m-d') : null,
+                'progress' => $task->progress ?? 0,
+                'status' => $task->status,
+                // Add subtasks or specific gantt fields if needed, e.g. type: 'task', parents...
+            ];
+        })->values(); // reset keys
+        
+        $project->gantt_chart_data = $ganttData;
+
+        return $project;
+    }
 }

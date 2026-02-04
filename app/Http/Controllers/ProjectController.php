@@ -97,4 +97,15 @@ class ProjectController extends Controller
             return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function projectDetailsForCalender($id)
+    {
+        try {
+            $data = $this->service->projectDetailsForCalender($id);
+
+            return $this->successResponse($data, 'Project details retrieved successfully', Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

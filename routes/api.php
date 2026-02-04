@@ -29,6 +29,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // Projects Routes
     Route::apiResource('/projects', ProjectController::class);
+    Route::get('/my-project-list', [ProjectController::class, 'myProjects']);
+    Route::get('/project-details/{id}', [ProjectController::class, 'projectDetails']);
+    Route::get('/project-details-for-calender/{id}', [ProjectController::class, 'projectDetailsForCalender']);
 
     // Planning Types Routes
     Route::get('/planning-type-list', [ProjectPlanningController::class, 'planningTypes']);
@@ -65,8 +68,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/update-project-module/{id}', [ProjectPlanningController::class, 'updateProjectModule']);
     Route::delete('/delete-project-module/{id}', [ProjectPlanningController::class, 'deleteProjectModule']);
     Route::get('/project-module-list/{project_id}', [ProjectPlanningController::class, 'projectModuleList']);
-    Route::get('/my-project-list', [ProjectController::class, 'myProjects']);
-    Route::get('/project-details/{id}', [ProjectController::class, 'projectDetails']);
 
     // Task Routes
     Route::post('/add-task', [TaskController::class, 'addTasks']);
