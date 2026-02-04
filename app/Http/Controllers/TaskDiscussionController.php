@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Traits\HelperTrait;
 use App\Services\TaskDiscussionService;
+use App\Http\Requests\StoreTaskDiscussionRequest;
 
 class TaskDiscussionController extends Controller
 {
@@ -27,7 +28,7 @@ class TaskDiscussionController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(StoreTaskDiscussionRequest $request)
     {
         try {
             $taskDiscussion = $this->taskDiscussionService->store($request);
