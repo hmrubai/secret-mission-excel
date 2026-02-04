@@ -64,6 +64,16 @@ class Task extends Model
         return $this->hasMany(TaskLog::class);
     }
 
+    public function discussions()
+    {
+        return $this->hasMany(TaskDiscussion::class);
+    }
+
+    public function subtasks()
+    {
+        return $this->hasMany(SubTask::class);
+    }
+
     /* =======================
      | Assignment Methods
      ======================= */

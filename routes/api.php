@@ -8,6 +8,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectPlanningController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\SubTaskController;
+use App\Http\Controllers\TaskDiscussionController;
 use Symfony\Component\HttpKernel\Profiler\Profile;
 
 // Public

@@ -83,7 +83,11 @@ class TaskService
             'module', 
             'creator', 
             'assignments',
-            'assignments.user:id,name,email,profile_picture,user_type,phone'
+            'assignments.user:id,name,email,profile_picture,user_type,phone',
+            'discussions',
+            'discussions.user:id,name,email,profile_picture,user_type,phone',
+            'subtasks',
+            'subtasks.creator:id,name,email,profile_picture,user_type,phone',
         ])->findOrFail($id);
     }
 
@@ -150,7 +154,11 @@ class TaskService
             'module', 
             'creator', 
             'assignments',
-            'assignments.user:id,name,email,profile_picture,user_type,phone'
+            'assignments.user:id,name,email,profile_picture,user_type,phone',
+            'discussions',
+            'discussions.user:id,name,email,profile_picture,user_type,phone',
+            'subtasks',
+            'subtasks.creator:id,name,email,profile_picture,user_type,phone',
         ])->where('project_module_id', $project_module_id)->get();
     }
 
