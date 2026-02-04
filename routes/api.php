@@ -7,6 +7,7 @@ use App\Http\Controllers\VendorController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectPlanningController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\SubTaskController;
 use Symfony\Component\HttpKernel\Profiler\Profile;
 
 // Public
@@ -79,6 +80,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Route::post('/assign-multiple-member-to-task', [TaskController::class, 'assignMemberToTask']);
     Route::post('/remove-member-from-task', [TaskController::class, 'removeMemberFromTask']);
     Route::post('/assign-self-to-task', [TaskController::class, 'assignSelfToTask']);
+
+    // Sub Task Routes
+    Route::post('/add-sub-task', [SubTaskController::class, 'addSubTask']);
+    Route::post('/update-sub-task/{id}', [SubTaskController::class, 'updateSubTask']);
+    Route::post('/mark-sub-task-completed/{sub_task_id}', [SubTaskController::class, 'markSubTaskAsCompleted']);
+    Route::get('/sub-task-details/{id}', [SubTaskController::class, 'getSubTaskDetails']);
+    Route::get('/all-sub-task-list/{task_id}', [SubTaskController::class, 'allSubTaskListByTask']);
+    Route::delete('/delete-sub-task/{id}', [SubTaskController::class, 'deleteSubTask']);
 
     // Logout Route
     Route::post('/logout', [AuthController::class, 'logout']);
