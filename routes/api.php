@@ -89,6 +89,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/all-sub-task-list/{task_id}', [SubTaskController::class, 'allSubTaskListByTask']);
     Route::delete('/delete-sub-task/{id}', [SubTaskController::class, 'deleteSubTask']);
 
+    // Task Discussion Routes
+    Route::apiResource('/task-discussions', TaskDiscussionController::class);
+
     // Logout Route
     Route::post('/logout', [AuthController::class, 'logout']);
 });
