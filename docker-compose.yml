@@ -1,0 +1,43 @@
+# version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    image: digitalocean.com/php
+    container_name: app
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+      DB_HOST: host.docker.internal
+      DB_PORT: 3306
+      DB_DATABASE: ${DB_DATABASE:-secret_mission_excel}
+      DB_USERNAME: root
+      DB_PASSWORD: root
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    networks:
+      - app-network
+
+  webserver:
+    image: nginx:alpine
+    container_name: webserver
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - app-network
+    depends_on:
+      - app
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
