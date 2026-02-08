@@ -28,7 +28,7 @@ class TaskDiscussionService
         $this->applySorting($query, $request);
 
         // Searching
-        $searchKeys = ['message']; // Define the fields you want to search by
+        $searchKeys = ['message', 'task_id']; // Define the fields you want to search by
         $this->applySearch($query, $request->input('search'), $searchKeys);
 
         // Pagination
@@ -85,5 +85,13 @@ class TaskDiscussionService
     {
         $taskDiscussion = TaskDiscussion::findOrFail($id);
         return $taskDiscussion->delete();
+    }
+
+    public function getTaskDiscussionsByTaskId(int $taskId)
+    {
+        return TaskDiscussion::where('task_id', $taskId)
+            ->with('user')
+            ->orderBy('created_at', 'desc')
+            ->get();
     }
 }

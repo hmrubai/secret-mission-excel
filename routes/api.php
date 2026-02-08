@@ -94,6 +94,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Task Discussion Routes
     Route::apiResource('/task-discussions', TaskDiscussionController::class);
     Route::post('/add-task-discussions', [TaskDiscussionController::class, 'addTaskDiscussion']);
+    Route::get('/task-discussion/{task_id}', [TaskDiscussionController::class, 'getTaskDiscussionsByTaskId']);
 
     // Logout Route
     Route::post('/logout', [AuthController::class, 'logout']);

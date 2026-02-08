@@ -77,4 +77,14 @@ class TaskDiscussionController extends Controller
             return $this->errorResponse($e->getMessage(), 'Failed to delete task discussion', 500);
         }
     }
+
+    public function getTaskDiscussionsByTaskId($taskId)
+    {
+        try {
+            $taskDiscussions = $this->taskDiscussionService->getTaskDiscussionsByTaskId($taskId);
+            return $this->successResponse($taskDiscussions, 'Task Discussions retrieved successfully');
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), 'Failed to retrieve task discussions', 500);
+        }
+    }
 }
