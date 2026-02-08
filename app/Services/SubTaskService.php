@@ -103,6 +103,18 @@ class SubTaskService
         return $subTask;
     }
 
+    public function markSubTaskAsIncomplete(Request $request, int $id)
+    {
+        $subTask = SubTask::findOrFail($id);
+        $subTask->status = 'pending';
+        $subTask->is_completed = false;
+        $subTask->completed_at = null;
+        $subTask->updated_by = Auth::id();
+        $subTask->save();
+
+        return $subTask;
+    }
+
     public function allSubTaskListByTask(int $task_id)
     {
         return SubTask::with(['task', 'creator', 'updater'])->where('task_id', $task_id)->get();

@@ -79,6 +79,16 @@ class SubTaskController extends Controller
         }
     }
 
+    public function markSubTaskAsIncomplete(Request $request, int $id)
+    {
+        try {
+            $subTask = $this->subTaskService->markSubTaskAsIncomplete($request, $id);
+            return $this->successResponse($subTask, 'SubTask marked as incomplete successfully');
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), 'Failed to mark subtask as incomplete', 500);
+        }
+    }
+
     public function allSubTaskListByTask(int $task_id)
     {
         try {

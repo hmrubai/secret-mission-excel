@@ -87,6 +87,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/add-sub-task', [SubTaskController::class, 'addSubTask']);
     Route::post('/update-sub-task/{id}', [SubTaskController::class, 'updateSubTask']);
     Route::post('/mark-sub-task-completed/{sub_task_id}', [SubTaskController::class, 'markSubTaskAsCompleted']);
+    Route::post('/mark-sub-task-incomplete/{sub_task_id}', [SubTaskController::class, 'markSubTaskAsIncomplete']);
     Route::get('/sub-task-details/{id}', [SubTaskController::class, 'getSubTaskDetails']);
     Route::get('/all-sub-task-list/{task_id}', [SubTaskController::class, 'allSubTaskListByTask']);
     Route::delete('/delete-sub-task/{id}', [SubTaskController::class, 'deleteSubTask']);
