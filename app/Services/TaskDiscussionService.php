@@ -91,7 +91,7 @@ class TaskDiscussionService
     {
         return TaskDiscussion::where('task_id', $taskId)
             ->with('user')
-            ->orderBy('created_at', 'desc')
+            ->orderBy('created_at', 'asc')
             ->get();
     }
 }
