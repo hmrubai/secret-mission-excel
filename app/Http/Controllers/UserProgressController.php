@@ -19,6 +19,21 @@ class UserProgressController extends Controller
     }
 
     /**
+     * Admin: Overview Gantt chart for ALL users.
+     * GET /admin/gantt-chart
+     */
+    public function adminGanttChart()
+    {
+        try {
+            $data = $this->service->getAdminGanttChart();
+
+            return $this->successResponse($data, 'Admin Gantt chart retrieved successfully', Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return $this->errorResponse($th->getMessage(), 'Something went wrong', Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
      * Admin: Get progress details of any user by user_id.
      * GET /admin/user-progress/{user_id}
      */

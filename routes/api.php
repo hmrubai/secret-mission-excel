@@ -99,6 +99,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/all-task-discussion/{task_id}', [TaskDiscussionController::class, 'getTaskDiscussionsByTaskId']);
 
     // User Progress Routes
+    Route::get('/admin/gantt-chart', [UserProgressController::class, 'adminGanttChart']);
     Route::get('/admin/user-progress/{user_id}', [UserProgressController::class, 'adminGetUserProgress']);
     Route::get('/my-progress', [UserProgressController::class, 'myProgress']);
 

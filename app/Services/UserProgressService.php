@@ -11,6 +11,93 @@ use Carbon\Carbon;
 class UserProgressService
 {
     /**
+     * Admin view: Gantt chart overview for ALL users.
+     * Returns each user with their task-based date bars and aggregate stats.
+     * GET /admin/gantt-chart
+     */
+    public function getAdminGanttChart(): array
+    {
+        // Load all active users with department and designation
+        $users = User::with(['department', 'designation'])
+            ->where('is_active', true)
+            ->orderBy('name')
+            ->get();
+
+        $allDates = [];
+
+        $userRows = $users->map(function (User $user) use (&$allDates) {
+            // Get all tasks assigned to this user (via task_assignments pivot)
+            $tasks = \App\Models\Task::whereHas('assignments', function ($q) use ($user) {
+                    $q->where('user_id', $user->id);
+                })
+                ->with(['project:id,name,status'])
+                ->get();
+
+            $totalTasks     = $tasks->count();
+            $completedTasks = $tasks->where('status', 'completed')->count();
+            $avgProgress    = $totalTasks > 0
+                ? round($tasks->avg('progress') ?? 0, 2)
+                : 0;
+
+            // Build Gantt bars (one bar per task)
+            $ganttBars = $tasks
+                ->filter(fn ($t) => $t->start_date || $t->deadline) // only tasks with at least one date
+                ->map(function ($task) use (&$allDates) {
+                    $start = $task->start_date ? $task->start_date->format('Y-m-d') : null;
+                    $end   = $task->deadline   ? $task->deadline->format('Y-m-d')   : null;
+
+                    // Collect dates to compute the global chart range later
+                    if ($start) $allDates[] = $start;
+                    if ($end)   $allDates[] = $end;
+
+                    return [
+                        'task_id'      => $task->id,
+                        'task_title'   => $task->title,
+                        'project_id'   => $task->project_id,
+                        'project_name' => $task->project?->name,
+                        'start'        => $start,
+                        'end'          => $end,
+                        'status'       => $task->status,
+                        'progress'     => $task->progress ?? 0,
+                        'priority'     => $task->priority,
+                    ];
+                })
+                ->sortBy('start')
+                ->values();
+
+            return [
+                'user_id'          => $user->id,
+                'name'             => $user->name,
+                'email'            => $user->email,
+                'phone'            => $user->phone,
+                'user_type'        => $user->user_type,
+                'department'       => $user->department?->name ?? null,
+                'designation'      => $user->designation?->name ?? null,
+                'profile_picture'  => $user->profile_picture,
+                'total_tasks'      => $totalTasks,
+                'completed_tasks'  => $completedTasks,
+                'overall_progress' => $avgProgress,
+                'gantt_bars'       => $ganttBars,
+            ];
+        })->values();
+
+        // Compute the global date range for chart width
+        $dateRange = [];
+        if (!empty($allDates)) {
+            sort($allDates);
+            $dateRange = [
+                'min_date' => $allDates[0],
+                'max_date' => $allDates[count($allDates) - 1],
+            ];
+        }
+
+        return [
+            'users'      => $userRows,
+            'date_range' => $dateRange,
+        ];
+    }
+
+    /**
      * Admin view: retrieve progress details for any user by their ID.
      */
     public function getUserProgressForAdmin(int $userId): array
