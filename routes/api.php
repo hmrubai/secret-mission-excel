@@ -9,6 +9,7 @@ use App\Http\Controllers\ProjectPlanningController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\SubTaskController;
 use App\Http\Controllers\TaskDiscussionController;
+use App\Http\Controllers\UserProgressController;
 use Symfony\Component\HttpKernel\Profiler\Profile;
 
 // Public
@@ -96,6 +97,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('/task-discussions', TaskDiscussionController::class);
     Route::post('/add-task-discussions', [TaskDiscussionController::class, 'addTaskDiscussion']); 
     Route::get('/all-task-discussion/{task_id}', [TaskDiscussionController::class, 'getTaskDiscussionsByTaskId']);
+
+    // User Progress Routes
+    Route::get('/admin/user-progress/{user_id}', [UserProgressController::class, 'adminGetUserProgress']);
+    Route::get('/my-progress', [UserProgressController::class, 'myProgress']);
 
     // Logout Route
     Route::post('/logout', [AuthController::class, 'logout']);
